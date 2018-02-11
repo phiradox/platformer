@@ -364,7 +364,7 @@ class GameScene: Scene {
             mainRenderPassDescriptor.colorAttachments[0].texture = currentDrawable.texture
             // drawing the background
             renderer.initEncoder(with: commandBuffer!, and: mainRenderPassDescriptor!, and: bgDistortionPipelineState)
-            counter += 0.02
+            counter += 0.003
             memcpy(bgDistortionBuffer.contents(), [counter, tileSize/self.size.width], 64)
             renderer.encoder.setVertexBuffer(bgDistortionBuffer, offset: 0, index: 2)
             //memcpy(lightOffset.contents(), [-levelManager.world.position.x, levelManager.world.position.y], 64)
@@ -578,7 +578,7 @@ class GameScene: Scene {
     }
     
     func generateBackground(topLeft color1: Color, topRight color2: Color, bottomLeft color3: Color, bottomRight color4: Color) {
-        var gridSize = Size(width: size.width/tileSize + 2, height: size.height/tileSize + 3)
+        var gridSize = Size(width: size.width/tileSize + 3, height: size.height/tileSize + 3)
         var vertices: [[Vertex]] = Array(repeating: Array(repeating: Vertex(position: Vector3(x: 0, y: 0, z: 0), color: Color(r: 0, g: 0, b: 0, a: 0)), count: Int(gridSize.height)), count: Int(gridSize.width))
         gridSize.width = Float(vertices.count)
         gridSize.height = Float(vertices[0].count)

@@ -129,11 +129,11 @@ vertex VertexOut bgDistortion(uint vid [[ vertex_id ]],
                               const device DistortionUniforms& dUnims [[ buffer(2) ]]) {
     VertexOut outVertex;
     outVertex.position = uniforms.projectionMatrix * uniforms.viewMatrix * uniforms.modelMatrix * float4(vertex_array[vid].position);
-    float addX = sin((outVertex.position.x + dUnims.counter)*4)*dUnims.size;
-    float addY = cos((outVertex.position.y + dUnims.counter)*4)*dUnims.size;
+    float addX = sin((outVertex.position.x + dUnims.counter)*6)*dUnims.size;
+    float addY = cos((outVertex.position.y + dUnims.counter)*6)*dUnims.size;
     outVertex.position.x += addX;
     outVertex.position.y += addY;
-    outVertex.color = vertex_array[vid].color*(1-(addX+addY-0.2)*2);
+    outVertex.color = vertex_array[vid].color*(1-(addX+addY-0.1)*4);
     return outVertex;
 }
 
