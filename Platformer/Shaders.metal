@@ -187,9 +187,10 @@ vertex VertexOut ambience(ushort vid [[ vertex_id ]],
     float4x4 transformations = uniforms.viewMatrix * uniforms.modelMatrix;
     transformations[3][0] *= (instance.scale.x * instance.scale.y);
     transformations[3][1] *= (instance.scale.x * instance.scale.y);
-    float4x4 instanceCoefficients = float4x4(float4(instance.scale.x, 0, 0, 0), float4(0, instance.scale.y, 0, 0), float4(0, 0, 1, 0), float4(instance.position.x/2, instance.position.y/2, 0, 1));
+    float4x4 instanceCoefficients = float4x4(float4(instance.scale.x, 0, 0, 0), float4(0, instance.scale.y, 0, 0), float4(0, 0, 1, 0), float4(instance.position.x, instance.position.y, 0, 1));
     VertexOut outVertex;
     outVertex.position = uniforms.projectionMatrix * transformations * instanceCoefficients * float4(vertex_array[vid].position);
+    outVertex.position.x += sin(outVertex.position.y*3)/5;
     //outVertex.color.r = abs(smoothstep(0, -1, outVertex.position.x));
     //outVertex.color.g = abs(smoothstep(-1, 0, outVertex.position.x)) + abs(smoothstep(0, 1, outVertex.position.x));
     //outVertex.color.b = smoothstep(0, 1, outVertex.position.x);

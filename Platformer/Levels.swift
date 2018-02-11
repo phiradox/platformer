@@ -48,7 +48,7 @@ struct Levels {
             "  X!!!!!X        X        XGGGGGR   XXXXXX      XXX      G              ",
             "  XXXXXXX                  XXXXX       X         X       GXXXX          "
             ], script: { (_ gameScene: GameScene) -> () in
-                gameScene.generateBackground(topLeft: Color(r: 0.1, g: 0.3, b: 0.5, a: 1), topRight: Color(r: 0.2, g: 0.4, b: 0.6, a: 1), bottomLeft: Color(r: 0.3, g: 0.5, b: 0.7, a: 1), bottomRight: Color(r: 0.4, g: 0.6, b: 0.8, a: 1))
+                gameScene.generateBackground(topLeft: Color(r: 0.1, g: 0.4, b: 0.2, a: 1), topRight: Color(r: 0.1, g: 0.5, b: 0.3, a: 1), bottomLeft: Color(r: 0.3, g: 0.5, b: 0.7, a: 1), bottomRight: Color(r: 0.4, g: 0.6, b: 0.8, a: 1))
                 gameScene.prepareAmbience(colored: Color(r: 1, g: 0, b: 0, a: 1))
         }
         ), (blocks: [
@@ -60,7 +60,7 @@ struct Levels {
                 "         X!!!!!!!!!!!!!!!!!!!!!!!!!X                    ",
                 "         XXXXXXXXXXXXXXXXXXXXXXXXXXX                    "
             ], script: { (_ gameScene: GameScene) -> () in
-                gameScene.generateBackground(topLeft: Color(r: 0.4, g: 0.4, b: 0.4, a: 1), topRight: Color(r: 0.4, g: 0.4, b: 0.4, a: 1), bottomLeft: Color(r: 0.4, g: 0.4, b: 0.4, a: 1), bottomRight: Color(r: 0.4, g: 0.4, b: 0.4, a: 1))
+                gameScene.generateBackground(topLeft: Color(r: 1.0, g: 0.4, b: 0.8, a: 1), topRight: Color(r: 1.0, g: 0.5, b: 0.1, a: 1), bottomLeft: Color(r: 1.0, g: 0.9, b: 0.2, a: 1), bottomRight: Color(r: 1.0, g: 0.0, b: 0.2, a: 1))
                 gameScene.prepareAmbience(colored: Color(r: 0, g: 1, b: 0, a: 1))
         }), (blocks: [
                 "XXXXXXXXXXXXXX",
