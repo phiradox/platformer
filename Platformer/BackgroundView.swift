@@ -176,6 +176,8 @@ class BackgroundView: MTKView {
         }
         
         superNode.updateLoops.append(dynamicBGLoop)
+        superNode.updateLoops.append(dynamicBGLoop)
+        superNode.updateLoops.append(dynamicBGLoop)
         GlobalVars.currentScene = superNode
         superNode.prepare()
         superNode.present()
