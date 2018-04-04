@@ -11,7 +11,6 @@
 		7A1D380E1F2EF57000A457F5 /* Transition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A1D380D1F2EF56F00A457F5 /* Transition.swift */; };
 		7A1D38101F2EF98B00A457F5 /* Sweep.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A1D380F1F2EF98B00A457F5 /* Sweep.swift */; };
 		7A1D38121F2EFC8800A457F5 /* Menus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A1D38111F2EFC8800A457F5 /* Menus.swift */; };
-		7A1E9D1C1F44AB9100325EB9 /* Fantasy Game Loop.wav in Resources */ = {isa = PBXBuildFile; fileRef = 7A1E9D1B1F44AB9100325EB9 /* Fantasy Game Loop.wav */; };
 		7A1E9D1F1F44B77C00325EB9 /* Patakas World.wav in Resources */ = {isa = PBXBuildFile; fileRef = 7A1E9D1E1F44B77C00325EB9 /* Patakas World.wav */; };
 		7A2AC5A91F34C11600E27DA0 /* Options.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A2AC5A81F34C11600E27DA0 /* Options.swift */; };
 		7A2AC5AB1F378BD500E27DA0 /* Protocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A2AC5AA1F378BD500E27DA0 /* Protocols.swift */; };
@@ -23,6 +22,7 @@
 		7A4134141F1521A000D4E6DB /* Maths.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A4134131F1521A000D4E6DB /* Maths.swift */; };
 		7A44E04F1E5682EA00B7277D /* LevelEditorScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A44E04E1E5682EA00B7277D /* LevelEditorScene.swift */; };
 		7A44E0531E5686E200B7277D /* BlockTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A44E0521E5686E200B7277D /* BlockTypes.swift */; };
+		7A4E55FA2038A662009C79C4 /* First Song.m4a in Resources */ = {isa = PBXBuildFile; fileRef = 7A4E55F92038A662009C79C4 /* First Song.m4a */; };
 		7A5841511E57C24800DEEDF1 /* EditorNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A5841501E57C24800DEEDF1 /* EditorNode.swift */; };
 		7A5A62FF1DD635D700FB293E /* CollisionComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A5A62FE1DD635D700FB293E /* CollisionComponent.swift */; };
 		7A5A63011DD63DF800FB293E /* Levels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A5A63001DD63DF800FB293E /* Levels.swift */; };
@@ -84,7 +84,6 @@
 		7A1D380D1F2EF56F00A457F5 /* Transition.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Transition.swift; sourceTree = "<group>"; };
 		7A1D380F1F2EF98B00A457F5 /* Sweep.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Sweep.swift; sourceTree = "<group>"; };
 		7A1D38111F2EFC8800A457F5 /* Menus.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Menus.swift; sourceTree = "<group>"; };
-		7A1E9D1B1F44AB9100325EB9 /* Fantasy Game Loop.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = "Fantasy Game Loop.wav"; sourceTree = "<group>"; };
 		7A1E9D1E1F44B77C00325EB9 /* Patakas World.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = "Patakas World.wav"; sourceTree = "<group>"; };
 		7A2AC5A81F34C11600E27DA0 /* Options.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Options.swift; sourceTree = "<group>"; };
 		7A2AC5AA1F378BD500E27DA0 /* Protocols.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Protocols.swift; sourceTree = "<group>"; };
@@ -96,6 +95,7 @@
 		7A4134131F1521A000D4E6DB /* Maths.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Maths.swift; sourceTree = "<group>"; };
 		7A44E04E1E5682EA00B7277D /* LevelEditorScene.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LevelEditorScene.swift; sourceTree = "<group>"; };
 		7A44E0521E5686E200B7277D /* BlockTypes.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BlockTypes.swift; sourceTree = "<group>"; };
+		7A4E55F92038A662009C79C4 /* First Song.m4a */ = {isa = PBXFileReference; lastKnownFileType = file; name = "First Song.m4a"; path = "../../../../Songs/First Song.m4a"; sourceTree = "<group>"; };
 		7A5841501E57C24800DEEDF1 /* EditorNode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditorNode.swift; sourceTree = "<group>"; };
 		7A5A62FE1DD635D700FB293E /* CollisionComponent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CollisionComponent.swift; sourceTree = "<group>"; };
 		7A5A63001DD63DF800FB293E /* Levels.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Levels.swift; sourceTree = "<group>"; wrapsLines = 0; };
@@ -211,8 +211,8 @@
 		7A1E9D211F44B79900325EB9 /* Sound */ = {
 			isa = PBXGroup;
 			children = (
+				7A4E55F92038A662009C79C4 /* First Song.m4a */,
 				7A1E9D1E1F44B77C00325EB9 /* Patakas World.wav */,
-				7A1E9D1B1F44AB9100325EB9 /* Fantasy Game Loop.wav */,
 			);
 			name = Sound;
 			sourceTree = "<group>";
@@ -497,13 +497,13 @@
 				7A9D86131FCCBD3600EC4BF4 /* Edit Icon.png in Resources */,
 				7A95A2B81DB3C8D9002E77BF /* Main.storyboard in Resources */,
 				7A95A2BA1DB3C8D9002E77BF /* Assets.xcassets in Resources */,
+				7A4E55FA2038A662009C79C4 /* First Song.m4a in Resources */,
 				7A9D86151FCCBD3600EC4BF4 /* Delete Icon.png in Resources */,
 				7A98F6B51FCC927400C9FB8A /* Left Icon.png in Resources */,
 				7A1E9D1F1F44B77C00325EB9 /* Patakas World.wav in Resources */,
 				7A9D86141FCCBD3600EC4BF4 /* Play Icon.png in Resources */,
 				7A95A2BD1DB3C8D9002E77BF /* LaunchScreen.storyboard in Resources */,
 				7A9D86171FCCE6DC00EC4BF4 /* Check Mark.png in Resources */,
-				7A1E9D1C1F44AB9100325EB9 /* Fantasy Game Loop.wav in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
