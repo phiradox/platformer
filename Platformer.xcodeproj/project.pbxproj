@@ -22,7 +22,6 @@
 		7A4134141F1521A000D4E6DB /* Maths.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A4134131F1521A000D4E6DB /* Maths.swift */; };
 		7A44E04F1E5682EA00B7277D /* LevelEditorScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A44E04E1E5682EA00B7277D /* LevelEditorScene.swift */; };
 		7A44E0531E5686E200B7277D /* BlockTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A44E0521E5686E200B7277D /* BlockTypes.swift */; };
-		7A4E55FA2038A662009C79C4 /* First Song.m4a in Resources */ = {isa = PBXBuildFile; fileRef = 7A4E55F92038A662009C79C4 /* First Song.m4a */; };
 		7A5841511E57C24800DEEDF1 /* EditorNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A5841501E57C24800DEEDF1 /* EditorNode.swift */; };
 		7A5A62FF1DD635D700FB293E /* CollisionComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A5A62FE1DD635D700FB293E /* CollisionComponent.swift */; };
 		7A5A63011DD63DF800FB293E /* Levels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A5A63001DD63DF800FB293E /* Levels.swift */; };
@@ -65,6 +64,7 @@
 		7AC6A1551E4D0F69000A2DFE /* SaveStateManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AC6A1541E4D0F69000A2DFE /* SaveStateManager.swift */; };
 		7ADCB3AB1E614A6100B9DDE1 /* Scene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ADCB3AA1E614A6100B9DDE1 /* Scene.swift */; };
 		7ADCB3B01E63833A00B9DDE1 /* Shaders.metal in Sources */ = {isa = PBXBuildFile; fileRef = 7ADCB3AF1E63833A00B9DDE1 /* Shaders.metal */; };
+		7AE529A42075669C008F560A /* First Song.m4a in Resources */ = {isa = PBXBuildFile; fileRef = 7AE529A32075669B008F560A /* First Song.m4a */; };
 		7AEB9DEC1F30A70700104F2D /* TextNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AEB9DEB1F30A70700104F2D /* TextNode.swift */; };
 		7AF15A881F31C78000C18CEB /* TextInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AF15A871F31C78000C18CEB /* TextInput.swift */; };
 /* End PBXBuildFile section */
@@ -95,7 +95,6 @@
 		7A4134131F1521A000D4E6DB /* Maths.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Maths.swift; sourceTree = "<group>"; };
 		7A44E04E1E5682EA00B7277D /* LevelEditorScene.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LevelEditorScene.swift; sourceTree = "<group>"; };
 		7A44E0521E5686E200B7277D /* BlockTypes.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BlockTypes.swift; sourceTree = "<group>"; };
-		7A4E55F92038A662009C79C4 /* First Song.m4a */ = {isa = PBXFileReference; lastKnownFileType = file; name = "First Song.m4a"; path = "../../../../Songs/First Song.m4a"; sourceTree = "<group>"; };
 		7A5841501E57C24800DEEDF1 /* EditorNode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditorNode.swift; sourceTree = "<group>"; };
 		7A5A62FE1DD635D700FB293E /* CollisionComponent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CollisionComponent.swift; sourceTree = "<group>"; };
 		7A5A63001DD63DF800FB293E /* Levels.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Levels.swift; sourceTree = "<group>"; wrapsLines = 0; };
@@ -142,6 +141,7 @@
 		7AC6A1541E4D0F69000A2DFE /* SaveStateManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SaveStateManager.swift; sourceTree = "<group>"; };
 		7ADCB3AA1E614A6100B9DDE1 /* Scene.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Scene.swift; sourceTree = "<group>"; };
 		7ADCB3AF1E63833A00B9DDE1 /* Shaders.metal */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.metal; path = Shaders.metal; sourceTree = "<group>"; };
+		7AE529A32075669B008F560A /* First Song.m4a */ = {isa = PBXFileReference; lastKnownFileType = file; path = "First Song.m4a"; sourceTree = "<group>"; };
 		7AEB9DEB1F30A70700104F2D /* TextNode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TextNode.swift; sourceTree = "<group>"; };
 		7AF15A871F31C78000C18CEB /* TextInput.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TextInput.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -211,7 +211,7 @@
 		7A1E9D211F44B79900325EB9 /* Sound */ = {
 			isa = PBXGroup;
 			children = (
-				7A4E55F92038A662009C79C4 /* First Song.m4a */,
+				7AE529A32075669B008F560A /* First Song.m4a */,
 				7A1E9D1E1F44B77C00325EB9 /* Patakas World.wav */,
 			);
 			name = Sound;
@@ -497,13 +497,13 @@
 				7A9D86131FCCBD3600EC4BF4 /* Edit Icon.png in Resources */,
 				7A95A2B81DB3C8D9002E77BF /* Main.storyboard in Resources */,
 				7A95A2BA1DB3C8D9002E77BF /* Assets.xcassets in Resources */,
-				7A4E55FA2038A662009C79C4 /* First Song.m4a in Resources */,
 				7A9D86151FCCBD3600EC4BF4 /* Delete Icon.png in Resources */,
 				7A98F6B51FCC927400C9FB8A /* Left Icon.png in Resources */,
 				7A1E9D1F1F44B77C00325EB9 /* Patakas World.wav in Resources */,
 				7A9D86141FCCBD3600EC4BF4 /* Play Icon.png in Resources */,
 				7A95A2BD1DB3C8D9002E77BF /* LaunchScreen.storyboard in Resources */,
 				7A9D86171FCCE6DC00EC4BF4 /* Check Mark.png in Resources */,
+				7AE529A42075669C008F560A /* First Song.m4a in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
