@@ -62,7 +62,7 @@ class LevelManager {
                 let position = Point(x: Float(column) * tileSize, y: Float(row) * tileSize)
                 switch char {
                 case "@":
-                    player.spawn(in: gameScene, and: world, at: position, with: Size(width: tileSize/2-tileSize/50, height: tileSize-tileSize/200*3))
+                    player.spawn(in: gameScene, and: world, at: position, with: Size(width: tileSize/2-tileSize/50, height: tileSize/2-tileSize/200*3))
                 case " ":
                     continue
                     
