@@ -54,7 +54,7 @@ class GameScene: Scene {
         level = 0
         initUI()
         
-        let path = Bundle.main.path(forResource: "Patakas World", ofType: "wav")!
+        let path = Bundle.main.path(forResource: "First Song", ofType: "m4a")!
         let url = URL(fileURLWithPath: path)
         gameViewController.play(sound: url, looped: -1)
     }
