@@ -23,10 +23,16 @@ class GraphicsOptionsView: UIView, UITableViewDelegate, UITableViewDataSource {
             case .toggle:
                 let toggleCell = (tableView.dequeueReusableCell(withIdentifier: "Toggle") as! ToggleCell)
                 toggleCell.option!.text = options[indexPath.row].label
+                toggleCell.toggle.isOn = (options[indexPath.row].data[0] as! UnsafeMutablePointer<Bool>).pointee
+                toggleCell.index = indexPath.row
                 cell = toggleCell
             case .slider:
                 let sliderCell = (tableView.dequeueReusableCell(withIdentifier: "Slider") as! SliderCell)
                 sliderCell.option!.text = options[indexPath.row].label
+                sliderCell.slider.minimumValue = Float(options[indexPath.row].data[1] as! Int)
+                sliderCell.slider.maximumValue = Float(options[indexPath.row].data[2] as! Int)
+                sliderCell.slider.value = (options[indexPath.row].data[0] as! UnsafeMutablePointer<Float>).pointee
+                sliderCell.index = indexPath.row
                 cell = sliderCell
             }
         }
@@ -42,32 +48,41 @@ class GraphicsOptionsView: UIView, UITableViewDelegate, UITableViewDataSource {
         case slider
     }
     
-    let options: [(label: String, type: OptionsType)] = [
-        ("Menu Clouds", .toggle),
-        ("Menu Cloud Blur", .toggle),
-        ("Menu Cloud Blur Amount", .slider),
-        ("Shadows", .toggle),
-        ("Shadow Blur", .toggle),
-        ("Shadow Blur Amount", .slider),
-        ("Ambience", .toggle),
-        ("Ambience Blur", .toggle),
-        ("Ambience Blur Amount", .slider),
-        ("Ambience Particle Count", .slider)
+    let options: [(label: String, type: OptionsType, data: [Any])] = [
+        ("Menu Clouds", .toggle, [Options.cloudsBool]),
+        ("Menu Cloud Blur", .toggle, [Options.cloudBlurBool]),
+        ("Menu Cloud Blur Amount", .slider, [Options.cloudBlurIntensity, 0, 50]),
+        ("Shadows", .toggle, [Options.shadowsBool]),
+        ("Shadow Blur", .toggle, [Options.shadowBlurBool]),
+        ("Shadow Blur Amount", .slider, [Options.shadowBlurIntensity, 0, 20]),
+        ("Ambience", .toggle, [Options.ambienceBool]),
+        ("Ambience Blur", .toggle, [Options.ambienceBlurBool]),
+        ("Ambience Blur Amount", .slider, [Options.ambienceBlurIntensity, 0, 20]),
+        ("Ambience Particle Count", .slider, [Options.ambienceParticleCount, 128, 8192])
     ]
 }
 
 class ToggleCell: UITableViewCell {
     @IBOutlet weak var option: UILabel!
     @IBOutlet weak var toggle: UISwitch!
+    var index: Int = 0
+    @IBAction func valueChanged(_ sender: Any) {
+        ((self.superview!.superview! as! GraphicsOptionsView).options[index].data[0] as! UnsafeMutablePointer<Bool>).pointee = toggle.isOn
+    }
 }
 
 class SliderCell: UITableViewCell {
     @IBOutlet weak var option: UILabel!
     @IBOutlet weak var slider: UISlider!
+    var index: Int = 0
+    @IBAction func valueChanged(_ sender: Any) {
+        ((self.superview!.superview! as! GraphicsOptionsView).options[index].data[0] as! UnsafeMutablePointer<Float>).pointee = slider.value
+    }
 }
 
 class OkayCell: UITableViewCell {
     @IBAction func ok(_ sender: Any?) {
         // save options and go back to other view
+        SaveData.saveOptions()
     }
 }
