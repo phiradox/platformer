@@ -579,7 +579,8 @@ class GameScene: Scene {
     }
     
     func generateBackground(topLeft color1: Color, topRight color2: Color, bottomLeft color3: Color, bottomRight color4: Color) {
-        var gridSize = Size(width: size.width/tileSize + 3, height: size.height/tileSize + 3)
+        let blockSize = tileSize*2
+        var gridSize = Size(width: size.width/blockSize + 3, height: size.height/blockSize + 3)
         var vertices: [[Vertex]] = Array(repeating: Array(repeating: Vertex(position: Vector3(x: 0, y: 0, z: 0), color: Color(r: 0, g: 0, b: 0, a: 0)), count: Int(gridSize.height)), count: Int(gridSize.width))
         gridSize.width = Float(vertices.count)
         gridSize.height = Float(vertices[0].count)
@@ -595,7 +596,7 @@ class GameScene: Scene {
                 green *= coefficient
                 blue *= coefficient
                 let baseColor = Color(r: red, g: green, b: blue, a: 1)
-                vertices[x][y] = Vertex(position: Vector3(x: (Float(x)-gridSize.width/2)*tileSize, y: (Float(y)-gridSize.height/2)*tileSize, z: 0), color: baseColor)
+                vertices[x][y] = Vertex(position: Vector3(x: (Float(x)-gridSize.width/2)*blockSize, y: (Float(y)-gridSize.height/2)*blockSize, z: 0), color: baseColor)
             }
         }
         
