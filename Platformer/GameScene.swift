@@ -371,6 +371,7 @@ class GameScene: Scene {
             //renderer.encoder.setFragmentBuffer(lightsBuffer, offset: 0, index: 0)
            // renderer.encoder.setFragmentBuffer(lightOffset, offset: 0, index: 1)
             renderer.renderMaster(self, withChildren: false)
+            //renderer.encoder.endEncoding()
             
             if Options.shadowsBool.pointee {
                 //renderer.projectionMatrix = shadowProjectionMatrix
@@ -387,7 +388,6 @@ class GameScene: Scene {
                 if secondaryOffset.y > levelManager.player.velocity.y + delta/2 {
                     secondaryOffset.y -= delta
                 }
-                
                 renderer.encoder.setRenderPipelineState(shadowRenderPipelineState)
                 renderer.encoder.setVertexBuffer(shadowOffsetUniform.nextUniformsBuffer(ofData: [shadowOffset.x - secondaryOffset.x, shadowOffset.y - secondaryOffset.y]), offset: 0, index: 2)
                 renderer.encoder.setFragmentBuffer(shadowColorBuffer, offset: 0, index: 0)
@@ -425,8 +425,9 @@ class GameScene: Scene {
                 compute?.dispatchThreadgroups(numGroups,
                                              threadsPerThreadgroup: threadGroupSize)
                 compute?.endEncoding()
-                renderer.projectionMatrix = gameViewController.projectionMatrix
                 renderer.initEncoder(with: commandBuffer!, and: mainRenderPassDescriptor, and: plainRenderPipelineState)
+            } else {
+                renderer.encoder.setRenderPipelineState(plainRenderPipelineState)
             }
             
             // rendering the main scene

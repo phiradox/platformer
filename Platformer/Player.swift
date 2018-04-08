@@ -128,8 +128,10 @@ class Player: Node {
         collidable.append(contentsOf: blocks.dynamicBlocks)
         
         // append only blocks in a small area to reduce cpu load
-        for x in (rasterizedX-2)...(rasterizedX+2) {
-            for y in (rasterizedY-2)...(rasterizedY+2) {
+        let boundShiftX = Int(velocity.x / GlobalVars.tileSize)
+        let boundShiftY = Int(velocity.y / GlobalVars.tileSize)
+        for x in (rasterizedX + (velocity.x > 0 ? -1 : (boundShiftX < -2 ? boundShiftX : -2)))...(rasterizedX + (velocity.x > 0 ? (boundShiftX > 2 ? boundShiftX : 2) : 2)) {
+            for y in (rasterizedY + (velocity.y > 0 ? -1 : (boundShiftY < -2 ? boundShiftY : -2)))...(rasterizedY + (velocity.y > 0 ? (boundShiftY > 2 ? boundShiftY : 2) : 2)) {
                 if x >= 0 && x < blocks.staticBlocks.count && y >= 0 && y < blocks.staticBlocks[0].count {
                     if let block = blocks.staticBlocks[x][y] {
                         collidable.append(block)
