@@ -10,48 +10,16 @@ import Foundation
 
 struct Levels {
     var data: [(blocks: [String], script: (_ gameScene: GameScene) -> ())] = [
-        /*(blocks: [
-            "                                                                        ",
-            "                                                                        ",
-            " ∞                                    0                                 ",
-            "XXX                       ‹‹‹‹‹XXX   XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX X",
-            "                                     LLL       ~        8X    ^        =",
-            "LLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLL   LLL       ~      MMMM    ^v       =",
-            "L                                L L LLL       ~             ^ v       =",
-            "L                               6L   LLL       ~MMMM         ^  v      =",
-            "X   XXXX                   XXXXGGG   LLL       ~      MM    ^   v      =",
-            "=                                    LLL       ~            ^    v     =",
-            "=                                    LLL       ~           ^     v     =",
-            "=                                    LLL       ~  M  MM    ^      v    =",
-            "= XXX                                LLL       ~  X  X    ^       v  XX=",
-            "=                                    LLL   7   ~  X!!X    ^        v  9=",
-            "=                                    XXXXXXXXXXXMMMMMMMMMXXXXXXXXXXXXXXX",
-            "=   X                                                                   ",
-            "=  5X                                                                   ",
-            "= GGGGGG                        X<<<<<<<<<<<<<<<<<<<<<<<<<<<            ",
-            "=                               !X                  X      G            ",
-            "=                                X                  X      G            ",
-            "=                                X                  X      G4           ",
-            "=                              X X                  XG GGG GXXXX        ",
-            "=                                X                  X    G G            ",
-            "=                                X           X      X    G G            ",
-            "=                                X           X      X    G G            ",
-            "=                                X           X      X    G G      XXXX  ",
-            "=                                X          2X      X    G G            ",
-            "=                                XBBBBBX XXXXXVVVVVVXGG GGFGGGG         ",
-            "=                                      X X               G              ",
-            "=                                      X X               G              ",
-            "=                                      X X               G              ",
-            "=            TTTTTTTTT                 X X               G      XXXX    ",
-            "=@              XXX       XX      GGGBBX X          3  GGG              ",
-            "GGGG   GGGGGGG   X        X1        X    X   GGGGGGGGG   G              ",
-            "  X!!!!!X        X        XGGGGGR   XXXXXX      XXX      G              ",
-            "  XXXXXXX                  XXXXX       X         X       GXXXX          "
+        (blocks: [
+            "                                 ",
+            " @                               ",
+            "XXX XX XX XX XX XX XX XX XX XX XX",
+            "   1  2  3  4  5  6  7  8  9  0  "
             ], script: { (_ gameScene: GameScene) -> () in
                 gameScene.generateBackground(topLeft: Color(r: 0.1, g: 0.4, b: 0.2, a: 1), topRight: Color(r: 0.1, g: 0.5, b: 0.3, a: 1), bottomLeft: Color(r: 0.3, g: 0.5, b: 0.7, a: 1), bottomRight: Color(r: 0.4, g: 0.6, b: 0.8, a: 1))
                 gameScene.prepareAmbience(colored: Color(r: 1, g: 0, b: 0, a: 1))
         }
-        ),*/(blocks: [
+        ), (blocks: [
                 "                         OO                             ",
                 "                         OO                             ",
                 "          O        O              O          O          ",

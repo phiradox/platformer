@@ -114,6 +114,7 @@ class BlockTypes {
         editorBlocks[">"] = (label: "Convey Right", block: block)
         blocks[">"] = (label: "Convey Right", block: block)
         
+        // Convey Left
         block = Block()
         block.geometry.node = block
         block.addComponent(Solid(parent: block))
@@ -141,19 +142,20 @@ class BlockTypes {
         blocks["S"] = (label: "Checkpoint", block: block)
         editorBlocks["S"] = (label: "Checkpoint", block: block)
         
+        // Ice
         block = Block()
         block.geometry.node = block
-        block.addComponent(Friction(ofValue: Vector2(2, 1.0), for: block))
+        block.addComponent(Friction(ofValue: Vector2(0.65, 1.0), for: block))
         block.addComponent(Solid(parent: block))
         block.geometry.color = Color(r: 0.6, g: 0.7, b: 1.0, a: 1.0)
         block.label = "I"
         editorBlocks["I"] = (label: "Ice", block: block)
         blocks["I"] = (label: "Ice", block: block)
             
-        //blocks
+        // Water
         block = Block()
         block.geometry.node = block
-        block.addComponent(Friction(ofValue: Vector2(0.5, 0.5), for: block))
+        block.addComponent(Friction(ofValue: Vector2(1.3, 2), for: block))
         block.geometry.color = Color(r: 0.0, g: 0.0, b: 1.0, a: 0.5)
         block.zPosition = 1
         block.addComponent(Water(for: block))
@@ -161,9 +163,10 @@ class BlockTypes {
         editorBlocks["L"] = (label: "Water", block: block)
         blocks["L"] = (label: "Water", block: block)
         
+        // Mud
         block = Block()
         block.geometry.node = block
-        block.addComponent(Friction(ofValue: Vector2(0.7, 0.8), for: block))
+        block.addComponent(Friction(ofValue: Vector2(1.43, 1.25), for: block))
         block.addComponent(Solid(parent: block))
         block.geometry.color = Color(r: 0.5, g: 0.3, b: 0.1, a: 1.0)
         block.label = "M"
@@ -198,7 +201,7 @@ class BlockTypes {
         
         block = Block()
         block.geometry.node = block
-        block.addComponent(Friction(ofValue: Vector2(0.6, 0.3), for: block))
+        block.addComponent(Friction(ofValue: Vector2(1.4, 3.33), for: block))
         block.geometry.color = Color(r: 0.8, g: 0.6, b: 0.4, a: 1.0)
         block.label = "~"
         editorBlocks["~"] = (label: "Quicksand", block: block)
@@ -207,7 +210,7 @@ class BlockTypes {
         block = Block()
         block.geometry.node = block
         block.addComponent(Ground(for: block))
-        block.addComponent(Friction(ofValue: Vector2(1, 0.1), for: block))
+        block.addComponent(Friction(ofValue: Vector2(1, 10), for: block))
         block.addComponent(Solid(parent: block))
         block.geometry.color = Color(r: 0, g: 0.6, b: 0, a: 1)
         block.label = "="

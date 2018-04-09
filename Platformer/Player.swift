@@ -64,32 +64,42 @@ class Player: Node {
             tuple.block.onCollision(with: self)
         }
         
-        if oldFriction.x > friction.x {
-            velocity.x = velocity.x * friction.x
+        if oldFriction.x < friction.x {
+            velocity.x = velocity.x / friction.x
         }
         
-        if oldFriction.y > friction.y {
-            velocity.y = velocity.y * friction.y
+        if oldFriction.y < friction.y {
+            velocity.y = velocity.y / friction.y
         }
         
         position.x += velocity.x
         position.y += velocity.y
         
-        velocity.y -= velocityConstants[0] * friction.y
+        velocity.y -= velocityConstants[0] / friction.y
         
-        if velocity.x <= velocityConstants[0] * friction.x && velocity.x >= -velocityConstants[0] * friction.x {
+        if velocity.x <= velocityConstants[0] / friction.x && velocity.x >= -velocityConstants[0] / friction.x {
             velocity.x = 0
         }
-        if velocity.x > velocityConstants[0] * friction.x {
+        if velocity.x > velocityConstants[0] / friction.x {
+            let oldValue = velocity.x
             velocity.x -= velocityConstants[0] * friction.x
+            // if the value of the velocity changed signs make it equal to 0. (subtracted too much)
+            if oldValue * velocity.x < 0 {
+                velocity.x = 0
+            }
         }
-        if velocity.x < -velocityConstants[0] * friction.x {
+        if velocity.x < -velocityConstants[0] / friction.x {
+            let oldValue = velocity.x
             velocity.x += velocityConstants[0] * friction.x
+            // if the value of the velocity changed signs make it equal to 0. (added too much)
+            if oldValue * velocity.x < 0 {
+                velocity.x = 0
+            }
         }
-        if velocity.x > velocityConstants[2] * friction.x {
+        if velocity.x > velocityConstants[2] / friction.x {
             velocity.x -= velocityConstants[1] * friction.x
         }
-        if velocity.x < -velocityConstants[2] * friction.x {
+        if velocity.x < -velocityConstants[2] / friction.x {
             velocity.x += velocityConstants[1] * friction.x
         }
         
@@ -100,14 +110,14 @@ class Player: Node {
     
     func input(input: (left: Bool, right: Bool, jump: Bool)) {
         if input.left {
-            velocity.x -= velocityConstants[3] * friction.x
+            velocity.x -= velocityConstants[3] / friction.x
         }
         if input.right {
-            velocity.x += velocityConstants[3] * friction.x
+            velocity.x += velocityConstants[3] / friction.x
         }
         if input.jump && ground {
             ground = false
-            velocity.y = velocityConstants[4] * friction.y
+            velocity.y = velocityConstants[4] / friction.y
         } else if input.jump && water {
             if velocity.y < GlobalVars.tileSize/20 * 2 {
                 velocity.y += velocityConstants[3]
