@@ -141,20 +141,25 @@ class Player: Node {
         }
         
         // orient dummy to detect horizontal collisions
-        dummy.position = Point(x: self.position.x + self.velocity.x, y: self.position.y)
-        var horizontalCollisions: [(block: Block, collision: (Bool, Bool))] = []
-        for block in collidable {
-            if dummy.intersects(block) {
-                horizontalCollisions.append((block, (true, false)))
-            }
-        }
         
-        // orient dummy to detect vertical collisions
-        dummy.position = Point(x: self.position.x, y: self.position.y + self.velocity.y)
+        let velocityHigh = (velocity.x > velocity.y ? velocity.x : velocity.y)
+        let divisions = Int(velocityHigh/GlobalVars.tileSize)
+        var horizontalCollisions: [(block: Block, collision: (Bool, Bool))] = []
         var verticalCollisions: [(block: Block, collision: (Bool, Bool))] = []
-        for block in collidable {
-            if dummy.intersects(block) {
-                verticalCollisions.append((block, (false, true)))
+        for z in 0...divisions {
+            dummy.position = Point(x: self.position.x + GlobalVars.tileSize * Float(z) + self.velocity.x.truncatingRemainder(dividingBy: GlobalVars.tileSize), y: self.position.y)
+            for block in collidable {
+                if dummy.intersects(block) {
+                    horizontalCollisions.append((block, (true, false)))
+                }
+            }
+            
+            // orient dummy to detect vertical collisions
+            dummy.position = Point(x: self.position.x, y: self.position.y + GlobalVars.tileSize * Float(z) + self.velocity.y.truncatingRemainder(dividingBy: GlobalVars.tileSize))
+            for block in collidable {
+                if dummy.intersects(block) {
+                    verticalCollisions.append((block, (false, true)))
+                }
             }
         }
         
