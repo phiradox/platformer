@@ -10,7 +10,7 @@ import Foundation
 
 struct Levels {
     var data: [(blocks: [String], script: (_ gameScene: GameScene) -> ())] = [
-        (blocks: [
+        /*(blocks: [
             "                                                                        ",
             "                                                                        ",
             " ∞                                    0                                 ",
@@ -51,7 +51,7 @@ struct Levels {
                 gameScene.generateBackground(topLeft: Color(r: 0.1, g: 0.4, b: 0.2, a: 1), topRight: Color(r: 0.1, g: 0.5, b: 0.3, a: 1), bottomLeft: Color(r: 0.3, g: 0.5, b: 0.7, a: 1), bottomRight: Color(r: 0.4, g: 0.6, b: 0.8, a: 1))
                 gameScene.prepareAmbience(colored: Color(r: 1, g: 0, b: 0, a: 1))
         }
-        ), (blocks: [
+        ),*/(blocks: [
                 "                         OO                             ",
                 "                         OO                             ",
                 "          O        O              O          O          ",

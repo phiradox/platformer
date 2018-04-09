@@ -179,11 +179,7 @@ class Win: CollisionComponent {
             GlobalVars.levelProgress = player.gameScene.level
         }
         GlobalVars.blockTypes.genBlocks()
-        if player.gameScene.level < 11 {
-            player.gameScene.level = 0
-        } else {
-            player.gameScene.level = 11
-        }
+        player.gameScene.level += 1
         player.gameScene.saveStateManager.setCheckpoint(with: player.gameScene.saveStateManager.copy(level: player.gameScene.levelManager.blocks), and: player)
         return false
     }

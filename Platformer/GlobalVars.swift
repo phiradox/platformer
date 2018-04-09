@@ -27,7 +27,7 @@ class GlobalVars {
     static var blockTypes: BlockTypes! = nil
     static var exitAction: () -> () = {}
     
-    static var levelProgress: Int = 10
+    static var levelProgress: Int = 0
     
     weak static var currentViewController: UIViewController! = nil
     weak static var activeUINode: Node? = nil
