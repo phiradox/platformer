@@ -291,8 +291,19 @@ class Convey: CollisionComponent {
     
     // add that speed when collided
     internal func onCollision(with player: Player) -> Bool {
-        player.velocity.x += speed.x
-        player.velocity.y += speed.y
+        // the amount when added to the parent's position would mark the last point in which the player could fully reside on the platform past it.
+        let offSidePoint = parent.size.width/2 - player.size.width
+        // see green/yellow field notes book for these calculations (04/09/18)
+        if player.position.x - player.size.width/2 > parent.position.x + offSidePoint && !player.collision.horizontal {
+            player.velocity.x += speed.x * (parent.position.x + parent.size.width/2 - (player.position.x - player.size.width/2))/player.size.width
+        } else if player.position.x + player.size.width/2 < parent.position.x - offSidePoint && !player.collision.horizontal {
+            player.velocity.x += speed.x * (player.position.x + player.size.width/2 - (parent.position.x - parent.size.width/2))/player.size.width
+        } else {
+            player.velocity.x += speed.x
+        }
+        if !player.collision.vertical {
+            player.velocity.y += speed.y
+        }
         return false
     }
     

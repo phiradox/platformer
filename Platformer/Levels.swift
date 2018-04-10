@@ -11,12 +11,12 @@ import Foundation
 struct Levels {
     var data: [(blocks: [String], script: (_ gameScene: GameScene) -> ())] = [
         (blocks: [
-            "                                 ",
-            " @                               ",
-            "XXX XX XX XX XX XX XX XX XX XX XX",
-            "   1  2  3  4  5  6  7  8  9  0  "
+            "                                           ",
+            " @                                         ",
+            "XXXVXXXVXXXVXXXVXXXVXXXVXXXVXXXVXXXVXXXVXXX",
+            "   1   2   3   4   5   6   7   8   9   0   "
             ], script: { (_ gameScene: GameScene) -> () in
-                gameScene.generateBackground(topLeft: Color(r: 0.1, g: 0.4, b: 0.2, a: 1), topRight: Color(r: 0.1, g: 0.5, b: 0.3, a: 1), bottomLeft: Color(r: 0.3, g: 0.5, b: 0.7, a: 1), bottomRight: Color(r: 0.4, g: 0.6, b: 0.8, a: 1))
+                gameScene.generateBackground(topLeft: Color(r: 0.000, g: 0.027, b: 0.459, a: 1), topRight: Color(r: 0.984, g: 0.082, b: 0.486, a: 1), bottomLeft: Color(r: 0.996, g: 0.992, b: 0.498, a: 1), bottomRight: Color(r: 0.165, g: 0.992, b: 0.478, a: 1))
                 gameScene.prepareAmbience(colored: Color(r: 1, g: 0, b: 0, a: 1))
         }
         ), (blocks: [
