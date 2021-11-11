@@ -16,50 +16,69 @@ class GameScene: Scene {
     // MARK: Variables
     
     // starting with level 0
+    // triggers level load each time the value is set
     var level: Int = 0 {
         didSet {
-            updateLoops = []
-            levelManager.loadLevel(level: level)
-            appendMainUpdateLoop()
-            update()
-            update()
-            compile()
+            setLevel();
         }
     }
-    let UI = Node()
     
+    func setLevel() {
+        updateLoops = []
+        levelManager.loadLevel(level: level)
+        appendMainUpdateLoop()
+        update()
+        update()
+        compile()
+    }
+    
+    // particles. could set to not load in options
     var ambience: Ambience = Ambience()
     
     // save states
     let saveStateManager = SaveStateManager()
     
+    // holds all level management features and data
     var levelManager: LevelManager!
     
+    // holds all of UI overlay
+    let UI = Node()
+    
     // controls
+        // data
     var input: (left: Bool, right: Bool, jump: Bool) = (false, false, false)
     var touchInfo: [UITouch: (left: Bool, right: Bool, jump: Bool)] = [:]
+        // buttons
     var space: Button! = nil
     var leftFeedback: Node! = nil
     var rightFeedback: Node! = nil
-    // buttons
-    //var buttons: [SKNode: {()->()}] = [:]
+    
     
     // MARK: Setup
     override func present() {
-        super.present()
+        super.present() // check why this is done
         sceneType = .game
+        
+        // initiliaze level manager
         levelManager = LevelManager(parent: self)
+        
         GlobalVars.blockTypes = BlockTypes(sized: GlobalVars.tileSize)
         GlobalVars.blockTypes.genBlocks()
+        
+        // triggers level load/init
         level = 0
+        
+        // sets up controls / menu buttons
         initUI()
         
+        // load/play the song
         let path = Bundle.main.path(forResource: "First Song", ofType: "m4a")!
         let url = URL(fileURLWithPath: path)
         gameViewController.play(sound: url, looped: -1)
     }
     
     func initUI() {
+        // add the UI container to the game manager (self == the GameScene)
         self.addChild(UI)
         UI.zPosition = -10
         UI.position = Point(x: 0, y: 0)
@@ -82,7 +101,9 @@ class GameScene: Scene {
         space.geometry.vertices[4].color = space.geometry.vertices[1].color // bottom right
         space.geometry.vertices[5].color = Color(r: 1, g: 1, b: 1, a: 0) // top right
         // end jump button shading
-        // feedback
+        
+        
+        // left/right direction visual feedback
         leftFeedback = Node()
         leftFeedback.geometry.dynamic = true
         leftFeedback.geometry.vertices = Rectangle(size: Size(width: self.size.width/4, height: self.size.height/5*4), color: Color(r: 1, g: 1, b: 1, a: 0)).toVertices()
@@ -93,15 +114,19 @@ class GameScene: Scene {
         rightFeedback.position = Point(x: self.size.width/8*3, y: self.size.height/2 - self.size.height/5*4/2)
         UI.addChild(leftFeedback)
         UI.addChild(rightFeedback)
-        // end feedback
+        // end visual feedback coding
         
         // main menu button
-        let menuButtonShape = ["XXXX", "X  X", "X  X", "XXXX"]
+        let menuButtonShape = ["XXXX",
+                               "X  X",
+                               "X  X",
+                               "XXXX"]
         let menuButton = Button();
         let block = Block()
         block.geometry.color = Color(r: 1.0, g: 0.0, b: 0.0, a: 0.5)
         block.size = Size(width: tileSize/2, height: tileSize/2)
-        Rasterizer.rasterize(menuButtonShape, repeating: block, sized: tileSize/2, in: menuButton)
+        Rasterizer.rasterize(menuButtonShape, repeating: block, sized: tileSize/2, in: menuButton) // turns the 
+        
         
         let menuButtonClosure = { () -> () in
             let storyBoard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
