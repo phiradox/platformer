@@ -62,6 +62,7 @@ class GameScene: Scene {
         // initiliaze level manager
         levelManager = LevelManager(parent: self)
         
+        // generate reference block data
         GlobalVars.blockTypes = BlockTypes(sized: GlobalVars.tileSize)
         GlobalVars.blockTypes.genBlocks()
         
@@ -80,7 +81,7 @@ class GameScene: Scene {
     func initUI() {
         // add the UI container to the game manager (self == the GameScene)
         self.addChild(UI)
-        UI.zPosition = -10
+        UI.zPosition = -10 // have the render manager schedule to render this latest
         UI.position = Point(x: 0, y: 0)
         UI.geometry.node = UI
         UI.geometry.dynamic = true
@@ -148,94 +149,67 @@ class GameScene: Scene {
                 self.compile()
             }
             self.ambience.position.y += 0.1
-            //self.levelManager.world.scale.x*=1.01
-            //self.levelManager.world.scale.y*=1.01
-            //self.levelManager.world.isDirty = true
             return false
         })
     }
     
     // MARK: Render
 
-    var plainRenderPipelineState: MTLRenderPipelineState! = nil
-    var shadowRenderPipelineState: MTLRenderPipelineState! = nil
-    var bgDistortionPipelineState: MTLRenderPipelineState! = nil
-    //var spotlightRenderPipelineState: MTLRenderPipelineState! = nil
-    //var backgroundLightRenderPipelineState: MTLRenderPipelineState! = nil
-    var ambienceRenderPipelineState: MTLRenderPipelineState! = nil
+    var plainRenderPipelineState: MTLRenderPipelineState! = nil // passes through geometry
+    var shadowRenderPipelineState: MTLRenderPipelineState! = nil // shifts geometry to a shadow offset and renders it black
+    var bgDistortionPipelineState: MTLRenderPipelineState! = nil // distorts the background geometry grid as a function of time in sinusoidal forms
+    var ambienceRenderPipelineState: MTLRenderPipelineState! = nil // renders pretty squares on top of everything
+    
+    // for computing blurs of rendereed shadow layer and/or the rendered ambience layer
     var multiplyComputePipelineState: MTLComputePipelineState! = nil
     var addComputePipelineState: MTLComputePipelineState! = nil
+    
+    // main construct used to handle graphics
     var mainRenderPassDescriptor: MTLRenderPassDescriptor! = nil
+    
+    // shadow and ambience layers
     var shadowTexture: MTLTexture! = nil
     var ambienceTexture: MTLTexture! = nil
     
+    // time based background distortion
     var counter: Float = 0.0
-    var bgDistortionBuffer: MTLBuffer! = nil
+    var bgDistortionBuffer: MTLBuffer! = nil // probably holds just the value counter
     
+    // shadow rendering, based on dynamic parameter of 'offset'
     var shadowOffset: Vector2! = nil
     var secondaryOffset: Vector2 = Vector2(0, 0)
     var delta: Float = 0.5
-    var shadowOffsetUniform: BufferManager! = nil
-    var shadowColor: [Float] = [0.0, 0.0, 0.0, 0.5]
+    var shadowOffsetUniform: BufferManager! = nil // holds the dynamic parameter updated every frame for the shadow offset
+    var shadowColor: [Float] = [0.0, 0.0, 0.0, 0.5] // shadow opacity
     var shadowColorBuffer: MTLBuffer! = nil
-    //var shadowProjectionMatrix: [Float] = []
-    //var lights: [Light] = []
-    //var lightFloatBuffer: [Float] = []
-    //var lightsBuffer: MTLBuffer! = nil
-    //var lightOffset: MTLBuffer! = nil
     
     override func prepare() {
+        
         // bg distortion
         bgDistortionBuffer = device.makeBuffer(length: 64, options: [])
         
-        // shadows
+        // initialize dynamic shadow offset parameter
         shadowOffset = Vector2(-GlobalVars.tileSize*1.5, -GlobalVars.tileSize*1.3)
-        //shadowProjectionMatrix = gameViewController.projectionMatrix
-        
-        /*
-        // lights
-        lights.append(Light(position: Vector2(0, 0), color: Color(r: 0, g: 1, b: 0, a: 1), radius: 1000, softness: 500, strength: 1))
-        lights.append(Light(position: Vector2(1000, 0), color: Color(r: 0, g: 1, b: 0, a: 1), radius: 1000, softness: 500, strength: 0.5))
-        lights.append(Light(position: Vector2(0, 750), color: Color(r:  1, g: 0, b: 0, a: 1), radius: 1000, softness: 500, strength: 0.5))
-        lights.append(Light(position: Vector2(1000, 1750), color: Color(r: 0, g: 1, b: 1, a: 1), radius: 1000, softness: 500, strength: 0.5))
-        
-        for light in lights {
-            lightFloatBuffer.append(contentsOf: [light.position.x, light.position.y])
-        }
-        for light in lights {
-            lightFloatBuffer.append(contentsOf: [light.color.r, light.color.g, light.color.b])
-        }
-        for light in lights {
-            lightFloatBuffer.append(light.radius)
-        }
-        for light in lights {
-            lightFloatBuffer.append(light.softness)
-        }
-        for light in lights {
-            lightFloatBuffer.append(light.strength)
-        }
-        print(lightFloatBuffer)
-        lightsBuffer = device.makeBuffer(bytes: lightFloatBuffer, length: lightFloatBuffer.count * 32, options: [])
-        
-        lightOffset = device.makeBuffer(bytes: [Float(0), Float(0)], length: 64, options: [])*/
         
         // shaders
         let defaultLibrary = device.makeDefaultLibrary()!
-        // plain shaders
+        
+        // plain, 'pass-through' shaders
         let plainFragmentProgram = defaultLibrary.makeFunction(name: "passThroughFragment")!
         let plainVertexProgram = defaultLibrary.makeFunction(name: "passThroughVertex")!
-        // shadow shaders
+        
+        // shadow shaders, render black color with opacity and pass through vertices offset by the shadow offset
         let shadowVertexProgram = defaultLibrary.makeFunction(name: "offsetVertex")!
         let shadowFragmentProgram = defaultLibrary.makeFunction(name: "shadowFragment")!
+        
         // bg distortion
         let bgDistortionVertexProgram = defaultLibrary.makeFunction(name: "bgDistortion")!
-        // spotlight shader
-        //let spotlightVertexProgram = defaultLibrary.makeFunction(name: "vignette")!
-        // background light fragment shader
-        //let backgroundLightFragmentProgram = defaultLibrary.makeFunction(name: "bgLightingFragment")!
-        // ambience shaders
+        
+        // ambience shaders: modifies position of geometry based on z-position (orthogonal projection) and renders the colors additively 
         let ambienceVertexProgram = defaultLibrary.makeFunction(name: "ambience")!
         let ambienceFragmentProgram = defaultLibrary.makeFunction(name: "ambienceFragment")!
+        
+        
         
         // =============== Main Render Pass ================
         let renderLayerTextureDescriptor = MTLTextureDescriptor()
@@ -246,6 +220,7 @@ class GameScene: Scene {
         
         shadowTexture = device.makeTexture(descriptor: renderLayerTextureDescriptor)
         shadowTexture.label = "Shadow render texture"
+        
         ambienceTexture = device.makeTexture(descriptor: renderLayerTextureDescriptor)
         ambienceTexture.label = "Ambience render texture"
         
@@ -278,7 +253,6 @@ class GameScene: Scene {
         colorAttachmentDescriptor.destinationAlphaBlendFactor = .oneMinusSourceAlpha
         colorAttachmentDescriptor.pixelFormat = MTLPixelFormat(rawValue: view.colorPixelFormat.rawValue)!
         
-        // pipeline configuration
         // =============== Plain Pipeline ================
         let plainRenderPipeline = MTLRenderPipelineDescriptor()
         plainRenderPipeline.label = "Simple Poly Render with Alpha"
@@ -311,30 +285,6 @@ class GameScene: Scene {
         bgDistortionPipeline.colorAttachments[0] = colorAttachmentDescriptor
         bgDistortionPipeline.colorAttachments[1] = colorAttachmentDescriptor
         bgDistortionPipeline.colorAttachments[2] = colorAttachmentDescriptor
-        
-        /* ================ Spotlight Pipeline ===============
-        let spotlightRenderPipeline = MTLRenderPipelineDescriptor()
-        spotlightRenderPipeline.label = "Spotlight Renderer"
-        spotlightRenderPipeline.vertexFunction = spotlightVertexProgram
-        spotlightRenderPipeline.fragmentFunction = plainFragmentProgram
-        spotlightRenderPipeline.sampleCount = view.sampleCount
-        
-        spotlightRenderPipeline.colorAttachments[0] = colorAttachmentDescriptor
-        spotlightRenderPipeline.colorAttachments[1] = colorAttachmentDescriptor
-        spotlightRenderPipeline.colorAttachments[2] = colorAttachmentDescriptor
-        */
-        
-        /* ================ Background Light Pipeline ========
-        let backgroundLightRenderPipeline = MTLRenderPipelineDescriptor()
-        backgroundLightRenderPipeline.label = "Background Renderer"
-        backgroundLightRenderPipeline.vertexFunction = plainVertexProgram
-        backgroundLightRenderPipeline.fragmentFunction = backgroundLightFragmentProgram
-        backgroundLightRenderPipeline.sampleCount = view.sampleCount
-        
-        backgroundLightRenderPipeline.colorAttachments[0] = colorAttachmentDescriptor
-        backgroundLightRenderPipeline.colorAttachments[1] = colorAttachmentDescriptor
-        backgroundLightRenderPipeline.colorAttachments[2] = colorAttachmentDescriptor
-        */
         
         // ================ Ambience Pipeline ================
         let ambienceRenderPipeline = MTLRenderPipelineDescriptor()
