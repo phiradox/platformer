@@ -314,8 +314,6 @@ class GameScene: Scene {
             try plainRenderPipelineState = device.makeRenderPipelineState(descriptor: plainRenderPipeline)
             try shadowRenderPipelineState = device.makeRenderPipelineState(descriptor: shadowRenderPipeline)
             try bgDistortionPipelineState = device.makeRenderPipelineState(descriptor: bgDistortionPipeline)
-            //try spotlightRenderPipelineState = device.makeRenderPipelineState(descriptor: spotlightRenderPipeline)
-            //try backgroundLightRenderPipelineState = device.makeRenderPipelineState(descriptor: backgroundLightRenderPipeline)
             try ambienceRenderPipelineState = device.makeRenderPipelineState(descriptor: ambienceRenderPipeline)
         } catch let error {
             print("Failed to create pipeline state, error \(error)")
@@ -333,42 +331,30 @@ class GameScene: Scene {
     }
     
     override func render(with renderer: Renderer, and commandQueue: MTLCommandQueue) {
+        // create the command buffer for the frame of rendering
         let commandBuffer = commandQueue.makeCommandBuffer()
         commandBuffer?.label = "Frame command buffer"
+        
         if let currentDrawable = view.currentDrawable {
+            // set to draw to the screen
             mainRenderPassDescriptor.colorAttachments[0].texture = currentDrawable.texture
-            // drawing the background
+            // drawing the background as a distorted grid
             renderer.initEncoder(with: commandBuffer!, and: mainRenderPassDescriptor!, and: bgDistortionPipelineState)
-            counter += 0.003
+            counter += 0.003 // increment the animation for the background
             memcpy(bgDistortionBuffer.contents(), [counter, tileSize/self.size.width], 64)
             renderer.encoder.setVertexBuffer(bgDistortionBuffer, offset: 0, index: 2)
-            //memcpy(lightOffset.contents(), [-levelManager.world.position.x, levelManager.world.position.y], 64)
-            //renderer.encoder.setFragmentBuffer(lightsBuffer, offset: 0, index: 0)
-           // renderer.encoder.setFragmentBuffer(lightOffset, offset: 0, index: 1)
+            // render the background
             renderer.renderMaster(self, withChildren: false)
-            //renderer.encoder.endEncoding()
             
             if Options.shadowsBool.pointee {
-                //renderer.projectionMatrix = shadowProjectionMatrix
                 // rendering the shadow texture
-                if secondaryOffset.x < levelManager.player.velocity.x - delta/2 {
-                    secondaryOffset.x += delta
-                }
-                if secondaryOffset.x > levelManager.player.velocity.x + delta/2 {
-                    secondaryOffset.x -= delta
-                }
-                if secondaryOffset.y < levelManager.player.velocity.y - delta/2 {
-                    secondaryOffset.y += delta
-                }
-                if secondaryOffset.y > levelManager.player.velocity.y + delta/2 {
-                    secondaryOffset.y -= delta
-                }
                 renderer.encoder.setRenderPipelineState(shadowRenderPipelineState)
-                renderer.encoder.setVertexBuffer(shadowOffsetUniform.nextUniformsBuffer(ofData: [shadowOffset.x - secondaryOffset.x, shadowOffset.y - secondaryOffset.y]), offset: 0, index: 2)
+                renderer.encoder.setVertexBuffer(shadowOffsetUniform.nextUniformsBuffer(ofData: [shadowOffset.x, shadowOffset.y]), offset: 0, index: 2)
                 renderer.encoder.setFragmentBuffer(shadowColorBuffer, offset: 0, index: 0)
                 renderer.renderMaster(levelManager.world, withChildren: true)
                 renderer.encoder.endEncoding()
                 
+                // ******** begin blurring shadows ********
                 var shadowBlurredTexture: MTLTexture! = nil
                 if Options.shadowBlurBool.pointee {
                     let kernel = MPSImageGaussianBlur(device: device, sigma: Options.shadowBlurIntensity.pointee)
@@ -400,16 +386,17 @@ class GameScene: Scene {
                 compute?.dispatchThreadgroups(numGroups,
                                              threadsPerThreadgroup: threadGroupSize)
                 compute?.endEncoding()
+                // ******** end blurring shadows ********
+                
                 renderer.initEncoder(with: commandBuffer!, and: mainRenderPassDescriptor, and: plainRenderPipelineState)
             } else {
                 renderer.encoder.setRenderPipelineState(plainRenderPipelineState)
             }
             
-            // rendering the main scene
-            //renderer.encoder.setFragmentBuffer(lightsBuffer, offset: 0, index: 0)
-            //renderer.encoder.setFragmentBuffer(lightOffset, offset: 0, index: 1)
+            // rendering the level, player, blocks, etc.
             renderer.renderMaster(levelManager.world, withChildren: true)
             
+            // rendering the ambience
             if Options.ambienceBool.pointee {
                 // rendering the ambience
                 ambience.calculateScreenMatrix()
