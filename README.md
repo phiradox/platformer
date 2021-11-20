@@ -16,6 +16,3 @@ A different spin on the graphics (accessible through the options)
 Level Editor:
 ![alt text](https://github.com/phiradox/platformer/blob/master/IMG_1775.PNG?raw=true)
 ![alt text](https://github.com/phiradox/platformer/blob/master/IMG_1654.PNG?raw=true)
-Some old graphical bugs (:D) :
-![alt text](https://github.com/phiradox/platformer/blob/master/IMG_1629.PNG?raw=true)
-![alt text](https://github.com/phiradox/platformer/blob/master/IMG_1635.PNG?raw=true)
