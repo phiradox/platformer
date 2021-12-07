@@ -115,8 +115,12 @@ class GameScene: Scene {
             /*let storyBoard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
             let newViewController = storyBoard.instantiateViewController(withIdentifier: "Menu View Controller") as! MenuViewController
             self.gameViewController.present(newViewController, animated: true, completion: nil)*/
-            
-            self.levelManager.loadLevel(level: 0)
+            if (self.level <= 0) {
+                // either level editor level or super level therefore menu screen.
+                self.gameViewController.present(MenuScene(of: self.size, and: self.tileSize, in: self.view, and: self.gameViewController, device: self.device))
+            }
+            self.level = 0
+            self.setLevel()
         }
         menuButton.spawn(in: UI, at: Point(x: -self.size.width/2 + menuButton.size.width, y: self.size.height/2 - menuButton.size.height), withSize: menuButton.size, onTouch: menuButtonClosure)
         menuButton.geometry.vertices = []

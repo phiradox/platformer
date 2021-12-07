@@ -19,8 +19,11 @@ class BlockTypes {
     }
     
     func genBlocks() {
-        // Wall
         var block = Block()
+        var editorVersion = Block()
+        
+        // Wall
+        block = Block()
         block.geometry.node = block
         block.geometry.color = Color(r: 0.8, g: 0.8, b: 0.8, a: 1)
         block.addComponent(Solid(parent: block))
@@ -193,11 +196,16 @@ class BlockTypes {
         }
         block.geometry.color = Color(r: 1, g: 0, b: 0, a: 1)
         block.label = "v"
-        //let editorDuplicate = block.duplicate()
-        //editorDuplicate.geometry.vertices = [Vertex(position: Vector3(-tileSize/2, tileSize/2, 0), color: Color(r: 1, g: 0, b: 0, a: 0)), Vertex(position: Vector3(tileSize/2, tileSize/2, 0), color: Color(r: 1, g: 0, b: 0, a: 0)), Vertex(position: Vector3(0, -tileSize/2, 0), color: Color(r: 1, g: 0, b: 0, a: 0))]
-        //editorBlocks["v"] = (label: "Vertical Moving Lava Beginning Down", block: editorDuplicate)
         block.updates = true
+        block.geometry.color = Color.red()
         blocks["v"] = (label: "Vertical Moving Lava Beginning Down", block: block)
+        editorVersion = block.duplicate()
+        editorVersion.geometry.vertices = [
+            Vertex(position: Vector3(-tileSize/2, tileSize/2, 0), color: Color(r: 1, g: 0, b: 0, a: 1)),
+            Vertex(position: Vector3(0, -tileSize/2, 0), color: Color(r: 1, g: 0, b: 0, a: 1)),
+            Vertex(position: Vector3(tileSize/2, tileSize/2, 0), color: Color(r: 1, g: 0, b: 0, a: 1))
+        ]
+        editorBlocks["v"] = (label: "Vertical Moving Lava Beginning Down", block: block)
         
         // Moving Lava Up
         block = Block()
@@ -208,16 +216,21 @@ class BlockTypes {
         }
         block.geometry.color = Color(r: 1, g: 0, b: 0, a: 1)
         block.label = "^"
-        //let editorDuplicate = block.duplicate()
-        //editorDuplicate.geometry.vertices = [Vertex(position: Vector3(-tileSize/2, -tileSize/2, 0), color: Color(r: 1, g: 0, b: 0, a: 0)), Vertex(position: Vector3(tileSize/2, -tileSize/2, 0), color: Color(r: 1, g: 0, b: 0, a: 0)), Vertex(position: Vector3(0, tileSize/2, 0), color: Color(r: 1, g: 0, b: 0, a: 0))]
-        //editorBlocks["^"] = (label: "Vertical Moving Lava Beginning Up", block: editorDuplicate)
         block.updates = true
+        block.geometry.color = Color.red()
         blocks["^"] = (label: "Vertical Moving Lava Beginning Up", block: block)
+        editorVersion = block.duplicate()
+        editorVersion.geometry.vertices = [
+            Vertex(position: Vector3(-tileSize/2, -tileSize/2, 0), color: Color(r: 1, g: 0, b: 0, a: 1)),
+            Vertex(position: Vector3(0, tileSize/2, 0), color: Color(r: 1, g: 0, b: 0, a: 1)),
+            Vertex(position: Vector3(tileSize/2, -tileSize/2, 0), color: Color(r: 1, g: 0, b: 0, a: 1))
+        ]
+        editorBlocks["^"] = (label: "Vertical Moving Lava Beginning Up", block: editorVersion)
         
         // Quicksand
         block = Block()
         block.geometry.node = block
-        block.addComponent(Friction(ofValue: Vector2(1.4, 3.33), for: block))
+        block.addComponent(Friction(ofValue: Vector2(1.4, 3.0), for: block))
         block.geometry.color = Color(r: 0.8, g: 0.6, b: 0.4, a: 1.0)
         block.label = "~"
         editorBlocks["~"] = (label: "Quicksand", block: block)
@@ -242,12 +255,32 @@ class BlockTypes {
         block.addComponent(Moving(by: Vector2(-GlobalVars.tileSize/20*2, 0), for: block))
         block.label = "‹"
         block.updates = true
-        
-        let editorDuplicate = block.duplicate()
-        editorDuplicate.geometry.vertices = [Vertex(position: Vector3(tileSize/2, -tileSize/2, 0), color: Color(r: 1, g: 1, b: 1, a: 0.8)), Vertex(position: Vector3(tileSize/2, tileSize/2, 0), color: Color(r: 1, g: 1, b: 1, a: 0.8)), Vertex(position: Vector3(-tileSize/2, 0, 0), color: Color(r: 1, g: 1, b: 1, a: 0.8))]
-        editorBlocks["‹"] = (label: "Moving Platform Starting Left", block: editorDuplicate)
-        
         blocks["‹"] = (label: "Moving Platform Starting Left", block: block)
+        editorVersion = block.duplicate()
+        editorVersion.geometry.vertices = [
+            Vertex(position: Vector3(tileSize/2, -tileSize/2, 0), color: Color(r: 0.8, g: 0.8, b: 0.8, a: 1)),
+            Vertex(position: Vector3(tileSize/2, tileSize/2, 0), color: Color(r: 0.8, g: 0.8, b: 0.8, a: 1)),
+            Vertex(position: Vector3(-tileSize/2, 0, 0), color: Color(r: 0.8, g: 0.8, b: 0.8, a: 1))
+        ]
+        editorBlocks["‹"] = (label: "Moving Platform Starting Left", block: editorVersion)
+        
+        // Moving Platform Right
+        block = Block()
+        block.geometry.node = block
+        block.geometry.color = Color(r: 0.8, g: 0.8, b: 0.8, a: 1)
+        block.addComponent(Solid(parent: block))
+        block.addComponent(Moving(by: Vector2(GlobalVars.tileSize/20*2, 0), for: block))
+        block.label = "›"
+        block.updates = true
+        blocks["›"] = (label: "Moving Platform Starting Right", block: block)
+        editorVersion = block.duplicate()
+        editorVersion.geometry.vertices = [
+            Vertex(position: Vector3(-tileSize/2, -tileSize/2, 0), color: Color(r: 0.8, g: 0.8, b: 0.8, a: 1)),
+            Vertex(position: Vector3(-tileSize/2, tileSize/2, 0), color: Color(r: 0.8, g: 0.8, b: 0.8, a: 1)),
+            Vertex(position: Vector3(tileSize/2, 0, 0), color: Color(r: 0.8, g: 0.8, b: 0.8, a: 1))
+        ]
+        editorBlocks["›"] = (label: "Moving Platform Starting Right", block: editorVersion)
+        
         
         // Send to level blocks
         for i in 1...9 {
