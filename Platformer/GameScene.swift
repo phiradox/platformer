@@ -174,7 +174,7 @@ class GameScene: Scene {
     var secondaryOffset: Vector2 = Vector2(0, 0)
     var delta: Float = 0.5
     var shadowOffsetUniform: BufferManager! = nil
-    var shadowColor: [Float] = [0.0, 0.0, 0.0, 0.833]
+    var shadowColor: [Float] = [0.0, 0.0, 0.0, 0.75]
     var shadowColorBuffer: MTLBuffer! = nil
     //var shadowProjectionMatrix: [Float] = []
     //var lights: [Light] = []

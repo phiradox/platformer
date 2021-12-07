@@ -118,7 +118,7 @@ class MenuScene: Scene {
         initMenu()
         
         // play menu music
-        let path = Bundle.main.path(forResource: "Fantasy Game Loop", ofType: "wav")!
+        let path = Bundle.main.path(forResource: "The Edge", ofType: "mp3")!
         let url = URL(fileURLWithPath: path)
         
         self.setColor(backgroundColorCycle[0][0], backgroundColorCycle[0][1], backgroundColorCycle[0][2], backgroundColorCycle[0][3])

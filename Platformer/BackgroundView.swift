@@ -179,7 +179,6 @@ class BackgroundView: MTKView {
         superNode.addChild(menuContainer)
         menuContainer.geometry.dynamic = true
         menuContainer.zPosition = 1.0
-        Menus.prepare(.mainMenu, in: menuContainer, in: superNode)
         
         superNode.updateLoops.append(dynamicBGLoop)
         superNode.updateLoops.append(dynamicBGLoop)

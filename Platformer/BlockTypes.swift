@@ -40,6 +40,14 @@ class BlockTypes {
         // Coin
         block = Block()
         block.geometry.node = block
+        block.geometry.vertices = [
+            Vertex(position: Vector3(0, -tileSize/2, 0), color: Color(r: 1, g: 1, b: 0, a: 1)),
+            Vertex(position: Vector3(-tileSize/2, 0, 0), color: Color(r: 1, g: 1, b: 0, a: 1)),
+            Vertex(position: Vector3(0, tileSize/2, 0), color: Color(r: 1, g: 1, b: 0, a: 1)),
+            Vertex(position: Vector3(0, -tileSize/2, 0), color: Color(r: 1, g: 1, b: 0, a: 1)),
+            Vertex(position: Vector3(0, tileSize/2, 0), color: Color(r: 1, g: 1, b: 0, a: 1)),
+            Vertex(position: Vector3(tileSize/2, 0, 0), color: Color(r: 1, g: 1, b: 0, a: 1)),
+        ]
         block.geometry.color = Color(r: 1, g: 1, b: 0, a: 1)
         block.addComponent(Coin(parent: block, value: 1))
         block.label = "O"

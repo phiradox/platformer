@@ -28,8 +28,6 @@ class GameViewController: UIViewController, MTKViewDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        
-        
         SaveData.loadOptions()
         
         device = MTLCreateSystemDefaultDevice()
@@ -63,7 +61,7 @@ class GameViewController: UIViewController, MTKViewDelegate {
         renderer = Renderer(with: device, projectionMatrix: projectionMatrix)
         
         // set up game scene
-        present(GameScene(of: self.view.frame.size.toSize(), and: tileSize, in: view, and: self, device: device))
+        present(MenuScene(of: self.view.frame.size.toSize(), and: tileSize, in: view, and: self, device: device))
         
         setNeedsUpdateOfScreenEdgesDeferringSystemGestures()
         
