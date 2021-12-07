@@ -132,7 +132,7 @@ class BackgroundView: MTKView {
         
         commandQueue = device!.makeCommandQueue()
         commandQueue.label = "Main command queue :)"
-        
+        print(self.frame.size)
         superNode = Scene(of: self.frame.size.toSize(), and: GlobalVars.tileSize, in: self, and: nil, device: device!)
         
         // generate all we need to render
@@ -174,6 +174,12 @@ class BackgroundView: MTKView {
             self.superNode.geometry.isDirty = false
             return false
         }
+        
+        let menuContainer = Node()
+        superNode.addChild(menuContainer)
+        menuContainer.geometry.dynamic = true
+        menuContainer.zPosition = 1.0
+        Menus.prepare(.mainMenu, in: menuContainer, in: superNode)
         
         superNode.updateLoops.append(dynamicBGLoop)
         superNode.updateLoops.append(dynamicBGLoop)
@@ -228,57 +234,63 @@ class BackgroundView: MTKView {
     func render(with renderer: Renderer, and commandQueue: MTLCommandQueue) {
         let commandBuffer = commandQueue.makeCommandBuffer()
         commandBuffer?.label = "Frame command buffer"
-        if let currentDrawable = (self.layer as! CAMetalLayer).nextDrawable() {
-            mainRenderPassDescriptor.colorAttachments[0].texture = currentDrawable.texture
-            //drawing the scene background
-            renderer.initEncoder(with: commandBuffer!, and: mainRenderPassDescriptor, and: plainRenderPipelineState)
-            renderer.renderMaster(superNode, withChildren: false)
-            
-            // drawing the cloud bloom
-            if Options.cloudsBool.pointee {
-                renderer.encoder.setRenderPipelineState(cloudBloomRenderPipelineState)
-                renderer.renderMaster(cloudContainer, withChildren: true)
+        if #available(iOS 13.0, *) {
+            if let currentDrawable = (self.layer as! CAMetalLayer).nextDrawable() {
+                mainRenderPassDescriptor.colorAttachments[0].texture = currentDrawable.texture
+                //drawing the scene background
+                renderer.initEncoder(with: commandBuffer!, and: mainRenderPassDescriptor, and: plainRenderPipelineState)
+                renderer.renderMaster(superNode, withChildren: false)
+                
+                // drawing the cloud bloom
+                if Options.cloudsBool.pointee {
+                    renderer.encoder.setRenderPipelineState(cloudBloomRenderPipelineState)
+                    renderer.renderMaster(cloudContainer, withChildren: true)
+                    renderer.endEncoding(with: device!)
+                    
+                    var cloudBloomBlurredTexture = cloudBloomTexture
+                    if Options.cloudBlurBool.pointee {
+                        let kernel = MPSImageGaussianBlur(device: device!, sigma: Options.cloudBlurIntensity.pointee)
+                        kernel.encode(commandBuffer: commandBuffer!, inPlaceTexture: &cloudBloomBlurredTexture!, fallbackCopyAllocator: nil)
+                    }
+                    
+                    let compute = commandBuffer?.makeComputeCommandEncoder()
+                    compute?.setComputePipelineState(addComputePipelineState)
+                    // input one -- primary texture
+                    compute?.setTexture(currentDrawable.texture, index: 0)
+                    // input two -- shadow texture
+                    compute?.setTexture(cloudBloomBlurredTexture, index: 1)
+                    // output texture
+                    compute?.setTexture(currentDrawable.texture, index: 2)
+                    
+                    let textureWidth = Int(cloudBloomTexture.width)
+                    let textureHeight = Int(cloudBloomTexture.height)
+                    
+                    // set up an 8x8 group of threads
+                    let threadGroupSize = MTLSize(width: 8, height: 8, depth: 1)
+                    
+                    // define the number of such groups needed to process the textures
+                    let numGroups = MTLSize(
+                        width: textureWidth/threadGroupSize.width+1,
+                        height: textureHeight/threadGroupSize.height+1,
+                        depth: 1)
+                    
+                    compute?.dispatchThreadgroups(numGroups,
+                                                  threadsPerThreadgroup: threadGroupSize)
+                    compute?.endEncoding()
+                    
+                    renderer.initEncoder(with: commandBuffer!, and: mainRenderPassDescriptor, and: plainRenderPipelineState)
+                }
                 renderer.endEncoding(with: device!)
                 
-                var cloudBloomBlurredTexture = cloudBloomTexture
-                if Options.cloudBlurBool.pointee {
-                    let kernel = MPSImageGaussianBlur(device: device!, sigma: Options.cloudBlurIntensity.pointee)
-                    kernel.encode(commandBuffer: commandBuffer!, inPlaceTexture: &cloudBloomBlurredTexture!, fallbackCopyAllocator: nil)
-                }
-                
-                let compute = commandBuffer?.makeComputeCommandEncoder()
-                compute?.setComputePipelineState(addComputePipelineState)
-                // input one -- primary texture
-                compute?.setTexture(currentDrawable.texture, index: 0)
-                // input two -- shadow texture
-                compute?.setTexture(cloudBloomBlurredTexture, index: 1)
-                // output texture
-                compute?.setTexture(currentDrawable.texture, index: 2)
-                
-                let textureWidth = Int(cloudBloomTexture.width)
-                let textureHeight = Int(cloudBloomTexture.height)
-                
-                // set up an 8x8 group of threads
-                let threadGroupSize = MTLSize(width: 8, height: 8, depth: 1)
-                
-                // define the number of such groups needed to process the textures
-                let numGroups = MTLSize(
-                    width: textureWidth/threadGroupSize.width+1,
-                    height: textureHeight/threadGroupSize.height+1,
-                    depth: 1)
-                
-                compute?.dispatchThreadgroups(numGroups,
-                                              threadsPerThreadgroup: threadGroupSize)
-                compute?.endEncoding()
-                
-                renderer.initEncoder(with: commandBuffer!, and: mainRenderPassDescriptor, and: plainRenderPipelineState)
+                commandBuffer?.present(currentDrawable)
             }
-            renderer.endEncoding(with: device!)
-            
-            commandBuffer?.present(currentDrawable)
+        } else {
+            // Fallback on earlier versions
         }
         commandBuffer?.commit()
     }
+    
+    
     
     func prepare() {
         // shaders

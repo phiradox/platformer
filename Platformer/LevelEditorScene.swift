@@ -205,8 +205,8 @@ class LevelEditorScene: Scene {
         if levelNode.children.count <= 1 {
             return [""]
         }
-        var topLeft = Point(x: 2147483647, y: -2147483647)
-        var bottomRight = Point(x: -2147483647, y: 2147483647)
+        var topLeft = Point(x: 2147483648, y: -2147483648)
+        var bottomRight = Point(x: -2147483648, y: 2147483648)
         for node in self.levelNode.children {
             if let editorNode = node as? EditorNode {
                 if !editorNode.empty {

@@ -11,10 +11,10 @@ import Foundation
 struct Levels {
     var data: [(blocks: [String], script: (_ gameScene: GameScene) -> ())] = [
         (blocks: [
-            "                                           ",
-            " @                                         ",
-            "XXXVXXXVXXXVXXXVXXXVXXXVXXXVXXXVXXXVXXXVXXX",
-            "   1   2   3   4   5   6   7   8   9   0   "
+            "                                            ",
+            " @                                         ∞",
+            "XXXVXXXVXXXVXXXVXXXVXXXVXXXVXXXVXXXVXXXVXXX ",
+            "   1   2   3   4   5   6   7   8   9   0    "
             ], script: { (_ gameScene: GameScene) -> () in
                 gameScene.generateBackground(topLeft: Color(r: 0.000, g: 0.027, b: 0.459, a: 1), topRight: Color(r: 0.984, g: 0.082, b: 0.486, a: 1), bottomLeft: Color(r: 0.996, g: 0.992, b: 0.498, a: 1), bottomRight: Color(r: 0.165, g: 0.992, b: 0.478, a: 1))
                 gameScene.prepareAmbience(colored: Color(r: 1, g: 0, b: 0, a: 1))
@@ -211,10 +211,10 @@ struct Levels {
                 "@  !   !      X         X           X L ",
                 "XXXXXXXXXXXX  X   OO    X  XXXXXXXXXX  L",
                 "X    LLLL     X   II    XO X    X       ",
-                "X   LLLLLL    X         X  X    X LOLOL ",
-                "X  LLL  LLL   X         X OX  TOX O     ",
-                "X LLL    LL   X         X  X  X X L !!!!",
-                "X LL          X         XO X  X X O     ",
+                "X LLLLLLLLLL  X         X  X    X LOLOL ",
+                "X LLLLLLLLLL  X         X OX  TOX O     ",
+                "X LLL    LLL  X         X  X  X X L !!!!",
+                "X LL      LL  X         XO X  X X O     ",
                 "X O           X II      X  X  X X LOL   ",
                 "X L!!!!!!!!X  X         X OX  X X   O   ",
                 "X O XXXXXXXXXXX         X  X  X X   L   ",
@@ -398,14 +398,13 @@ struct Levels {
             " @    G    G    X    X    X             ",
             "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
             ], script: { (_ gameScene: GameScene) -> () in
-                gameScene.geometry.color = Color(r:0.07, g:0.39, b:0.71, a:1.0)
-                gameScene.geometry.vertices[0].color = Color(r:0.984, g:0.447, b:0.518, a:1.0) // bottom left
-                gameScene.geometry.vertices[1].color = Color(r: 0.988, g: 0.612, b: 0.494, a: 1.0) // bottom right
-                gameScene.geometry.vertices[2].color = Color(r: 0.420, g: 0.082, b: 0.467, a: 1.0) // top left
-                gameScene.geometry.vertices[3].color = gameScene.geometry.vertices[2].color // top left
-                gameScene.geometry.vertices[4].color = gameScene.geometry.vertices[1].color // bottom right
-                gameScene.geometry.vertices[5].color = Color(r:0.890, g:0.165, b:0.463, a:1.0) // top right
+                //gameScene.geometry.color = Color(r:0.07, g:0.39, b:0.71, a:1.0)
                 
+                gameScene.generateBackground(topLeft: Color(r: 0.420, g: 0.082, b: 0.467, a: 1.0),
+                                             topRight: Color(r:0.890, g:0.165, b:0.463, a:1.0),
+                                             bottomLeft: Color(r:0.984, g:0.447, b:0.518, a:1.0),
+                                             bottomRight: Color(r: 0.988, g: 0.612, b: 0.494, a: 1.0))
+
                 gameScene.prepareAmbience(colored: Color(r: 1, g: 0, b: 0, a: 1))
         }
         ), (blocks: [
@@ -582,37 +581,37 @@ struct Levels {
                 
                 gameScene.prepareAmbience(colored: Color(r: 0.2, g: 0.6, b: 0.5, a: 0.8))
         }), (blocks: [
-            "XXXX                                                               ",
-            "X  X                                                               ",
-            "X  X GGGGGGGGGGGGGG  OOOO    OOOO                                  ",
-            "X@ XBX!!!!!!!!!!!!XXXXXXXXXXXXXXXX>>>>>>>>>>>>>>>>>><<<<<<<<<<<<< X",
-            "XVVXOX                           X             R                  X",
-            "XVVXOX            XFFFFFFFFFFFFFFX O O O       R      R           X",
-            "XVVXOX            X              X        R    R      R           X",
-            "XOOXOX            X              X        R           R           X",
-            "XOOXOX            X              XFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFX",
-            "XVOXOXRRRRRRRRRRRRXFFFFFFFFFFFFFFX        R           R           X",
-            "XOOXRX            X              X  RRR   R !!!!!!!!!!!!!!!!!!!!!!X",
-            "XOOXBX            X              X                RRRRRRR      RRRX",
-            "XOOX              X              X  O O                        OOOX",
-            "XOVXXXXXXXXXXXXXXXXXXXXXXXXXX    XFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFX",
-            "XOOX    X       X!!!!X      X    X                             OOOX",
-            "XOOXBBXVX                   XBBBBX!!!!!!!!!!!!!!!! O O O !!!!!!!!!X",
-            "XOOX  X                          X                                X",
-            "XOOX  X         RRRRR            X                                X",
-            "XVOX  X                          XFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFX",
-            "XOOX  X FFFFF           FFFFF    X                                X",
-            "XOOX  X                          XW                               X",
-            "XVVX  X!!!!!!!!!!!!!!!!!!!!!!!!!!X!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!X",
-            "XOOX  XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX",
-            "XOOX  X                                                           X",
-            "XOOX  X                                                           X",
-            "XOVX                                                              X",
-            "XOOXRX        !     OOOOO     !      OOOO      !                  X",
-            "XOOXXXX<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<BBBBBBX",
-            "X                       OOOOOOOOOOOOOOOOOOO                       X",
-            "X>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>XX",
-            "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
+            "XXXX                                                                                    X",
+            "X  X                                                                                    X",
+            "X  X GGGGGGGGGGGGGG  OOOO    OOOO                                                       X",
+            "X@ XBX!!!!!!!!!!!!XXXXXXXXXXXXXXXX>>>>>>>>>>>>>>>>>><<<<<<<<<<<<< X                     X",
+            "XVVXOX                           X             R                  X                     X",
+            "XVVXOX            XFFFFFFFFFFFFFFX O O O       R      R           X                     X",
+            "XVVXOX            X              X        R    R      R           X                     X",
+            "XOOXOX            X              X        R           R           X                     X",
+            "XOOXOX            X              XFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFXXXXXXXXXXXXXXXXXXXXXXX",
+            "XVOXOXRRRRRRRRRRRRXFFFFFFFFFFFFFFX                    R           X                      ",
+            "XOOXRX            X              X  RRR        !!!!!!!!!!!!!!!!!!!X                      ",
+            "XOOXBX            X              X                                X                      ",
+            "XOOX              X              X  O O                        OOOX                      ",
+            "XOVXXXXXXXXXXXXXXXXXXXXXXXXXX    XFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFX                      ",
+            "XOOX    X       X!!!!X      X    X                       RRR   OOOX                      ",
+            "XOOXBBXVX                   XBBBBX!!!!!!!!!!!!!!!! O O O !!!!!!!!!X                      ",
+            "XOOX  X                          XXXXXXXXXXXXXXXXX                X                      ",
+            "XOOX  X         RRRRR            X   O                            X                      ",
+            "XVOX  X                          XFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFX                      ",
+            "XOOX  X FFFFF           FFFFF    X                                X                      ",
+            "XOOX  X                          XW                               X                      ",
+            "XVVX  X!!!!!!!!!!!!!!!!!!!!!!!!!!X!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!X                      ",
+            "XOOX  XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX                      ",
+            "XOOX  X                                                           X                      ",
+            "XOOX  X                                                           X                      ",
+            "XOVX                                                              X                      ",
+            "XOOXRX        !     OOOOO     !      OOOO      !                  X                      ",
+            "XOOXXXX<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<BBBBBBX                      ",
+            "X                       OOOOOOOOOOOOOOOOOOO                       X                      ",
+            "X>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>XX                      ",
+            "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX                      "
             ], script: { (_ gameScene: GameScene) -> () in
                 gameScene.geometry.color = Color(r:0.11, g:0.21, b:0.18, a:1.0)
                 
@@ -643,7 +642,7 @@ struct Levels {
             "XGGGGGGGX                    V      XGGGGGGXX!!!!!!!!!!!!!!!!!X                            OORRRRRRRRRRRRRRRRRRX   XX XXX   >XXXXXGGGGGGGGGGXGGGGGGGGRXWOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOX",
             "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX!!!!!!!!!!!!!!!!!!XXXXXX!XXXXXXXXXXXXXXXXXXXXXXX!!!!!!!XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
             ], script: { (_ gameScene: GameScene) -> () in
-                gameScene.geometry.color = Color(r:0.89, g:0.89, b:0.59, a:1.0)
+                gameScene.generateBackground(topLeft: Color(r:0.89, g:0.89, b:0.59, a:1.0), topRight: Color(r:0.89, g:0.89, b:0.59, a:1.0), bottomLeft: Color(r:0.89, g:0.89, b:0.59, a:1.0), bottomRight: Color(r:0.89, g:0.89, b:0.59, a:1.0))
                 gameScene.prepareAmbience(colored: Color(r: 0.8, g: 0.8, b: 0.6, a: 0.8))
         }), (blocks: [
             "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX",
@@ -669,7 +668,7 @@ struct Levels {
             "XGGGGGX       XGGGGGXGGGGGX       XGGGGGX",
             "XXXXXXX   O   XXXXXXXXXXXXX   O   XXXXXXX"
             ], script: { (_ gameScene: GameScene) -> () in
-                gameScene.setColor(Color(r: 0.925, g: 0.784, b: 0.357, a: 1), Color(r: 0.914, g: 0.408, b: 0.282, a: 1), Color(r: 0.749, g: 0.169, b: 0.216, a: 1), Color(r: 0.094, g: 0.616, b: 0.675, a: 1))
+                gameScene.generateBackground(topLeft: Color(r: 0.925, g: 0.784, b: 0.357, a: 1), topRight: Color(r: 0.914, g: 0.408, b: 0.282, a: 1), bottomLeft: Color(r: 0.749, g: 0.169, b: 0.216, a: 1), bottomRight: Color(r: 0.094, g: 0.616, b: 0.675, a: 1))
                 gameScene.prepareAmbience(colored: Color(r: 0.2, g: 0.2, b: 0.8, a: 0.8))
         }), (blocks: [
             "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX",

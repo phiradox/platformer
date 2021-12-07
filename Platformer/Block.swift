@@ -6,11 +6,11 @@
 //  Copyright © 2016 Ariston Kalpaxis. All rights reserved.
 //
 
-import SpriteKit
 
 class Block: Node {
     var collisionComponents: [CollisionComponent] = []
     var updateComponents: [UpdateComponent] = []
+    var updates: Bool = false
     
     func spawn(at position: Point, in world: Node, size: Size) {
         world.addChild(self)
@@ -42,7 +42,7 @@ class Block: Node {
     }
     
     func onUpdate() {
-        var removeComponents: [Int] = []
+        /*var removeComponents: [Int] = []
         for (index, component) in updateComponents.enumerated() {
             component.update()
             if component.oneTime {
@@ -54,7 +54,7 @@ class Block: Node {
             for index in removeComponents {
                 updateComponents.remove(at: index)
             }
-        }
+        }*/
     }
     
     func duplicate() -> Block {
@@ -65,6 +65,7 @@ class Block: Node {
         copy.geometry.node = copy
         copy.geometry.vertices = self.geometry.vertices
         copy.geometry.color = self.geometry.color
+        copy.updates = self.updates
         
         for component in collisionComponents {
             if let componentDuplicate = component.duplicate(forParent: copy) {

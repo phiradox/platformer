@@ -15,11 +15,11 @@ class InstancedNode: Node {
     var stride: Int = MemoryLayout<Float>.stride * 8
     var instancesBuffer: MTLBuffer! = nil
     
-    var indexCount: Int! = nil
-    var indexType: MTLIndexType = MTLIndexType.uint16
+    var indexCount: (Int?, Int?) = (nil, nil)
+    var indexType: MTLIndexType! = MTLIndexType.uint16
     var indexBuffer: MTLBuffer! = nil
     
-    func compileBuffer(with device: MTLDevice) {
+    func compileBuffers(with device: MTLDevice) {
         var floatBuffer: [Float] = []
         for node in instances {
             floatBuffer.append(contentsOf: node.floatBuffer())

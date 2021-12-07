@@ -47,7 +47,7 @@ struct Lights {
     float strength[MAX_LIGHTS];
 };
 
-vertex VertexOut vignette(uint vid [[ vertex_id ]],
+/*vertex VertexOut vignette(uint vid [[ vertex_id ]],
                           const device VertexIn* vertex_array  [[ buffer(0) ]],
                           const device Uniforms& uniforms [[ buffer(1) ]],
                           const device Lights& lights [[ buffer(2) ]]) {
@@ -63,7 +63,7 @@ vertex VertexOut vignette(uint vid [[ vertex_id ]],
     }
     
     return outVertex;
-};
+};*/
 
 struct FragOut {
     float4 color [[ color(0) ]];
@@ -185,12 +185,12 @@ vertex VertexOut ambience(ushort vid [[ vertex_id ]],
                           const device Instance *perInstanceVars [[ buffer(2) ]] ) {
     Instance instance = perInstanceVars[iid];
     float4x4 transformations = uniforms.viewMatrix * uniforms.modelMatrix;
-    transformations[3][0] *= (instance.scale.x * instance.scale.y);
-    transformations[3][1] *= (instance.scale.x * instance.scale.y);
+    transformations[3][0] *= log(instance.scale.x * instance.scale.y);
+    transformations[3][1] *= log(instance.scale.x * instance.scale.y);
     float4x4 instanceCoefficients = float4x4(float4(instance.scale.x, 0, 0, 0), float4(0, instance.scale.y, 0, 0), float4(0, 0, 1, 0), float4(instance.position.x, instance.position.y, 0, 1));
     VertexOut outVertex;
     outVertex.position = uniforms.projectionMatrix * transformations * instanceCoefficients * float4(vertex_array[vid].position);
-    outVertex.position.x += sin(outVertex.position.y*3)/5;
+    outVertex.position.x += sin(outVertex.position.y*3)/20;
     //outVertex.color.r = abs(smoothstep(0, -1, outVertex.position.x));
     //outVertex.color.g = abs(smoothstep(-1, 0, outVertex.position.x)) + abs(smoothstep(0, 1, outVertex.position.x));
     //outVertex.color.b = smoothstep(0, 1, outVertex.position.x);
@@ -198,6 +198,12 @@ vertex VertexOut ambience(ushort vid [[ vertex_id ]],
     outVertex.color = instance.color;
     return outVertex;
 }
+
+struct VertexAndZOut {
+    float4 position [[position]];
+    float4 color;
+    float z;
+};
 
 struct AmbienceFragOut {
     float4 color [[color(2)]];
@@ -231,3 +237,4 @@ kernel void addShader(
     
     dest.write(result_color, gid);
 };
+

@@ -34,10 +34,11 @@ class MenuViewController: UIViewController, UIScrollViewDelegate {
     
     override func viewDidLayoutSubviews() {
         playMenu.frame = CGRect(x: self.view.frame.width, y: 0, width: self.view.frame.width, height: self.view.frame.height)
-        customLevels.frame = CGRect(x: self.view.frame.width, y: self.view.frame.height, width: self.view.frame.width, height: self.view.frame.height)
+        //customLevels.frame = CGRect(x: self.view.frame.width, y: self.view.frame.height, width: self.view.frame.width, height: self.view.frame.height)
         optionsMenu.frame = CGRect(x: 0, y: self.view.frame.height, width: self.view.frame.width, height: self.view.frame.height)
         scrollView.contentSize = CGSize(width: self.view.frame.width * 2, height: self.view.frame.height * 3)
         mainMenu.becomeFirstResponder()
+        background.frame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: self.view.frame.height)
     }
     
     override func viewDidLoad() {

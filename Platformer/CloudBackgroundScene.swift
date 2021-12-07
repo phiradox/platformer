@@ -13,7 +13,7 @@ import MetalPerformanceShaders
 
 class CloudBackgroundScene: Scene {
         
-    let cloudsPerSecond = 0.5
+    let cloudsPerSecond = 1.0
     var clouds: [(Node, Float)] = []
     var cloudContainer: Node = Node()
     
@@ -30,7 +30,7 @@ class CloudBackgroundScene: Scene {
             Color(r: 0.427, g: 0.604, b: 0.769, a: 1),
             Color(r: 0.522, g: 0.278, b: 0.302, a: 1),
             Color(r: 0.129, g: 0.259, b: 0.400, a: 1),
-            ],
+        ],
         [
             Color(r: 0.992, g: 0.859, b: 0.698, a: 1),
             Color(r: 0.996, g: 1.000, b: 0.949, a: 1),
@@ -46,13 +46,13 @@ class CloudBackgroundScene: Scene {
         [
             Color(r: 0.812, g: 0.435, b: 0.275, a: 1),
             Color(r: 1, g: 1, b: 0.655, a: 1),
-            Color(r: 0.427, g: 0.282, b: 0.310, a: 1),
+            Color(r: 0.227, g: 0.182, b: 0.300, a: 1),
             Color(r: 0.043, g: 0.145, b: 0.310, a: 1)
         ]
     ]
     var backgroundColorIndex: Int = 0
     var backgroundColorCounters: (counter: Int, r: [Float], g: [Float], b: [Float]) = (0, [], [], [])
-    var backgroundColorCycleSegmentLength = 600
+    var backgroundColorCycleSegmentLength = 150
     
     let cloudShapes: [[String]] = [
         [
@@ -109,11 +109,14 @@ class CloudBackgroundScene: Scene {
                 if self.backgroundColorCounters.counter >= self.backgroundColorCycleSegmentLength {
                     self.backgroundColorCounters.counter = 0
                     self.setColor(self.backgroundColorCycle[self.backgroundColorIndex][0], self.backgroundColorCycle[self.backgroundColorIndex][1], self.backgroundColorCycle[self.backgroundColorIndex][2], self.backgroundColorCycle[self.backgroundColorIndex][3])
+                    
+                    // tick color index
                     let oldIndex = self.backgroundColorIndex
                     self.backgroundColorIndex += 1
                     if self.backgroundColorIndex >= self.backgroundColorCycle.count {
                         self.backgroundColorIndex = 0
                     }
+                    
                     self.backgroundColorCounters.r = []
                     self.backgroundColorCounters.g = []
                     self.backgroundColorCounters.b = []
@@ -151,10 +154,10 @@ class CloudBackgroundScene: Scene {
                 let cloud = Node()
                 cloud.geometry.dynamic = true
                 Rasterizer.rasterizeWithGradient(cloudShapes[Int(arc4random_uniform(UInt32(cloudShapes.count)))], from: Color(r: 0.3, g: 0.1, b: 0.3, a: 0.3), to: Color(r: 1.0, g: 1.0, b: 1.0, a: 0.7), sized: tileSize, in: cloud)
-                cloud.position = Point(x: self.size.width*2, y: self.size.height/2 - Float(arc4random_uniform(UInt32(self.size.height))))
+                cloud.position = Point(x: self.size.width/2, y: self.size.height/2 - Float(arc4random_uniform(UInt32(self.size.height))))
                 
                 cloudContainer.addChild(cloud)
-                let velocity = -Float(Double(arc4random_uniform(UInt32(5)))/5.0) - 0.5
+                let velocity = (-Float(Double(arc4random_uniform(UInt32(5)))/2.5) - 1.0)*8
                 //cloud.parallax = -velocity + 1.0
                 clouds.append((cloud, velocity))
             }

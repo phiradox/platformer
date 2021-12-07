@@ -10,30 +10,29 @@ import Foundation
 
 protocol UpdateComponent {
     var oneTime: Bool { get }
-    weak var parent: Block! { get }
+    var parent: Block! { get }
+
     func duplicate(forParent parent: Block) -> UpdateComponent?
-    func update() -> Void
+    func appendUpdate(to scene: Scene) -> Void
 }
 
 class Moving: UpdateComponent {
-    weak internal var parent: Block!
+    var parent: Block!
     internal var oneTime: Bool
     var movement: Vector2
-    weak var scene: Scene!
     
-    init(by movement: Vector2, for block: Block, in scene: Scene) {
+    init(by movement: Vector2, for block: Block) {
         self.parent = block
         self.movement = movement
         oneTime = true
-        self.scene = scene
         self.parent.geometry.dynamic = true
     }
     
-    func update() {
+    func appendUpdate(to scene: Scene) {
         scene.updateLoops.append({() -> (Bool) in
             if let _ = self.parent {
                 // getting a hold of the blocks
-                let blocks = (self.scene as! GameScene).levelManager.blocks
+                let blocks = (scene as! GameScene).levelManager.blocks
                 
                 // Rasterizing the block's grid position for collision detecting
                 let rasterizedX = Int(self.parent.position.x/GlobalVars.tileSize)
@@ -78,7 +77,7 @@ class Moving: UpdateComponent {
     }
     
     internal func duplicate(forParent parent: Block) -> UpdateComponent? {
-        let component = Moving(by: movement, for: parent, in: self.scene)
+        let component = Moving(by: movement, for: parent)
         print("Moving component duplicated")
         return component
     }

@@ -15,6 +15,9 @@ class SaveStateManager {
     var checkpoint: Blocks? = nil
     var position: Point? = nil
     
+    // scene to append update loops to
+    var scene: Scene! = nil
+    
     func copy(level blocks: Blocks) -> Blocks {
         var staticCopy: [[Block?]] = []
         for column in blocks.staticBlocks {
@@ -29,16 +32,21 @@ class SaveStateManager {
             staticCopy.append(columnCopy)
         }
         
-        var dynamicCopy: [Block] = []
-        for block in blocks.dynamicBlocks {
-            dynamicCopy.append(block.duplicate())
+        var responsiveBlocksCopy: [Block] = []
+        for block in blocks.responsiveBlocks {
+            responsiveBlocksCopy.append(block.duplicate())
         }
         
-        return Blocks(staticBlocks: staticCopy, dynamicBlocks: dynamicCopy)
+        var animateBlocksCopy: [Block] = []
+        for block in blocks.animateBlocks {
+            animateBlocksCopy.append(block.duplicate())
+        }
+        
+        return Blocks(staticBlocks: staticCopy, responsiveBlocks: responsiveBlocksCopy, animateBlocks: animateBlocksCopy)
     }
     
     func checkpointCopy() -> Blocks {
-        return copy(level: checkpoint!)
+    return copy(level: checkpoint!)
     }
     
     func setCheckpoint(with state: Blocks, and player: Player) {

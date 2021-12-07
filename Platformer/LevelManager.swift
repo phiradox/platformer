@@ -32,10 +32,11 @@ class LevelManager {
         gameScene.addChild(world)
     }
     
-    func removeDynamicBlock(_ block: Block) {
-        for (n, potentialMatch) in blocks.dynamicBlocks.enumerated() {
+    // dynamic blocks include coins and rising and falling platforms
+    func removeResponsiveBlock(_ block: Block) {
+        for (n, potentialMatch) in blocks.responsiveBlocks.enumerated() {
             if potentialMatch === block {
-                blocks.dynamicBlocks.remove(at: n)
+                blocks.responsiveBlocks.remove(at: n)
             }
         }
     }
@@ -55,14 +56,15 @@ class LevelManager {
     func loadLevel(level: [String]) {
         world.removeAllChildren()
         blocks.staticBlocks = [[Block?]](repeating: [Block?](repeating: nil, count: level.count), count: level[0].count)
-        blocks.dynamicBlocks = []
+        blocks.responsiveBlocks = []
+        blocks.animateBlocks = []
         for (row, string) in level.reversed().enumerated() {
             for (column, char) in string.enumerated() {
                 var optional: Block? = nil
                 let position = Point(x: Float(column) * tileSize, y: Float(row) * tileSize)
                 switch char {
                 case "@":
-                    player.spawn(in: gameScene, and: world, at: position, with: Size(width: tileSize/2-tileSize/50, height: tileSize/2-tileSize/200*3))
+                    player.spawn(in: gameScene, and: world, at: position, with: Size(width: tileSize*5/12-tileSize/50, height: tileSize*5/12-tileSize/200*3))
                 case " ":
                     continue
                     
@@ -72,7 +74,13 @@ class LevelManager {
                 if let block = optional {
                     block.spawn(at: position, in: world, size: Size(width: tileSize, height: tileSize))
                     if block.geometry.dynamic {
-                        blocks.dynamicBlocks.append(block)
+                        if !block.updates {
+                            blocks.responsiveBlocks.append(block)
+                        } else {
+                            blocks.animateBlocks.append(block)
+                        }
+                    } else if block.updates {
+                        blocks.animateBlocks.append(block)
                     } else {
                         blocks.staticBlocks[column][row] = block
                     }
@@ -82,13 +90,17 @@ class LevelManager {
         player.dead = false
         player.gameScene.saveStateManager.setCheckpoint(with: blocks, and: player)
         
-        for block in blocks.dynamicBlocks {
-            block.onUpdate()
+        for block in blocks.animateBlocks {
+            for component in block.updateComponents {
+                component.appendUpdate(to: gameScene)
+            }
         }
+        
     }
     
     func update(input: (left: Bool, right: Bool, jump: Bool)) {
         player.update(with: blocks, and: input)
+        
         world.position.x = -player.position.x * world.scale.x
         world.position.y = -player.position.y * world.scale.y
     }
@@ -116,16 +128,28 @@ class LevelManager {
             blocks.staticBlocks.append(toAppend)
         }
         
-        blocks.dynamicBlocks = []
-        for block in checkpoint.dynamicBlocks {
+        blocks.responsiveBlocks = []
+        for block in checkpoint.responsiveBlocks {
             block.spawn(at: block.position, in: world, size: Size(width: gameScene.tileSize, height: gameScene.tileSize))
-            block.onUpdate()
-            blocks.dynamicBlocks.append(block)
+            blocks.responsiveBlocks.append(block)
+        }
+        
+        blocks.animateBlocks = []
+        for block in checkpoint.animateBlocks {
+            block.spawn(at: block.position, in: world, size: Size(width: gameScene.tileSize, height: gameScene.tileSize))
+            blocks.animateBlocks.append(block)
+        }
+        
+        for updatingBlock in blocks.animateBlocks {
+            for component in updatingBlock.updateComponents {
+                component.appendUpdate(to: gameScene)
+            }
         }
     }
 }
 
 struct Blocks {
     var staticBlocks: [[Block?]] = []
-    var dynamicBlocks: [Block] = []
+    var responsiveBlocks: [Block] = []
+    var animateBlocks: [Block] = []
 }

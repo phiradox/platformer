@@ -180,7 +180,8 @@ class Win: CollisionComponent {
         }
         GlobalVars.blockTypes.genBlocks()
         player.gameScene.level += 1
-        player.gameScene.saveStateManager.setCheckpoint(with: player.gameScene.saveStateManager.copy(level: player.gameScene.levelManager.blocks), and: player)
+        player.gameScene.setLevel()
+        
         return false
     }
     
@@ -219,7 +220,7 @@ class Vanish: CollisionComponent {
         if opacity < 0 {
             opacity = 0
             parent.removeFromParent()
-            player.gameScene.levelManager.removeDynamicBlock(self.parent)
+            player.gameScene.levelManager.removeResponsiveBlock(self.parent)
         }
         parent.geometry.color.a = opacity
         return true
@@ -239,7 +240,7 @@ class Rise: CollisionComponent {
     weak internal var parent: Block!
     
     internal func onCollision(with player: Player) -> Bool {
-        parent.position.y += 1 * GlobalVars.tileSize/20
+        parent.position.y += 0.75 * GlobalVars.tileSize/20
         if player.ground == true {
             player.position.y = parent.position.y + parent.size.height/2 + player.size.height/2
         }

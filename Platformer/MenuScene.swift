@@ -275,7 +275,7 @@ class MenuScene: Scene {
             renderer.initEncoder(with: commandBuffer!, and: mainRenderPassDescriptor, and: plainRenderPipelineState)
             renderer.renderMaster(self, withChildren: false)
             
-            // drawing the cloud bloom
+            // drawing the clouds
             if Options.cloudsBool.pointee {
                 renderer.encoder.setRenderPipelineState(cloudBloomRenderPipelineState)
                 renderer.renderMaster(cloudContainer, withChildren: true)

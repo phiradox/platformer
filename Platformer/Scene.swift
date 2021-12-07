@@ -31,7 +31,7 @@ class Scene: Node {
     init(of size: Size, and tileSize: Float, in view: MTKView, and gameViewController: GameViewController?, device: MTLDevice) {
         self.view = view
         self.tileSize = tileSize
-        super.init()
+        super.init() // Node()
         self.size = size
         self.device = device
         self.gameViewController = gameViewController

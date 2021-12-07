@@ -54,11 +54,11 @@ class GraphicsOptionsView: UIView, UITableViewDelegate, UITableViewDataSource {
         ("Menu Cloud Blur Amount", .slider, [Options.cloudBlurIntensity, 0, 50]),
         ("Shadows", .toggle, [Options.shadowsBool]),
         ("Shadow Blur", .toggle, [Options.shadowBlurBool]),
-        ("Shadow Blur Amount", .slider, [Options.shadowBlurIntensity, 0, 20]),
+        ("Shadow Blur Amount", .slider, [Options.shadowBlurIntensity, 0, 50]),
         ("Ambience", .toggle, [Options.ambienceBool]),
         ("Ambience Blur", .toggle, [Options.ambienceBlurBool]),
         ("Ambience Blur Amount", .slider, [Options.ambienceBlurIntensity, 0, 20]),
-        ("Ambience Particle Count", .slider, [Options.ambienceParticleCount, 128, 8192])
+        ("Ambience Particle Count", .slider, [Options.ambienceParticleCount, 128, 37268])
     ]
 }
 

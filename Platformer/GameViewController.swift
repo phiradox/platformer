@@ -27,6 +27,9 @@ class GameViewController: UIViewController, MTKViewDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        
+        
         SaveData.loadOptions()
         
         device = MTLCreateSystemDefaultDevice()
@@ -62,9 +65,13 @@ class GameViewController: UIViewController, MTKViewDelegate {
         // set up game scene
         present(GameScene(of: self.view.frame.size.toSize(), and: tileSize, in: view, and: self, device: device))
         
+        setNeedsUpdateOfScreenEdgesDeferringSystemGestures()
+        
         commandQueue = device.makeCommandQueue()
         commandQueue.label = "Main command queue :)"
     }
+    
+       
     
     @objc func play(sound url: URL, looped loops: Int) {
         do {
@@ -79,8 +86,8 @@ class GameViewController: UIViewController, MTKViewDelegate {
     }
     
     func draw(in view: MTKView) {
-        scene.update()
         scene.render(with: renderer, and: commandQueue)
+        scene.update()
     }
     
     func present(_ scene: Scene) {
@@ -109,6 +116,14 @@ class GameViewController: UIViewController, MTKViewDelegate {
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Release any cached data, images, etc that aren't in use.
+    }
+    
+    override func prefersHomeIndicatorAutoHidden() -> Bool {
+      return true
+    }
+    
+    override func preferredScreenEdgesDeferringSystemGestures() -> UIRectEdge {
+        return self.edgesForExtendedLayout
     }
 
     override var prefersStatusBarHidden: Bool {

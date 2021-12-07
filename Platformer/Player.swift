@@ -22,6 +22,7 @@ class Player: Node {
     
     var input: (left: Bool, right: Bool, jump: Bool) = (false, false, false)
     
+    // TODO: make this far easier, maybe make an enum for the array indices
     var velocityConstants: [Float] = []
     
     var coins: Int = 0
@@ -47,15 +48,20 @@ class Player: Node {
         dummy.size = self.size
         
         // init dampener velocities proportional to tileSize
+        // TODO: enum for indices, see above at variable declaration
         velocityConstants.append(contentsOf: [gameScene.tileSize/100, gameScene.tileSize/200*3, gameScene.tileSize/20*3, gameScene.tileSize/40, gameScene.tileSize/20*6.83125])
     }
     
     func update(with blocks: Blocks, and input: (left: Bool, right: Bool, jump: Bool)) {
         self.input(input: input)
         self.input = input
+        
         let oldFriction = friction
+        // will be modified if on collision with a block with a friction component
+        // CHECK: the lower valued friction is preferred when cycling through blocks/friction components
         friction.x = 1
         friction.y = 1
+        
         let conflictions = collidedBlocks(blocks: blocks)
         bounced = (false, false)
         self.water = false
@@ -135,7 +141,8 @@ class Player: Node {
         let rasterizedY = Int(self.position.y/gameScene.tileSize)
         
         // append all dynamic blocks
-        collidable.append(contentsOf: blocks.dynamicBlocks)
+        collidable.append(contentsOf: blocks.responsiveBlocks)
+        collidable.append(contentsOf: blocks.animateBlocks)
         
         // append only blocks in a small area to reduce cpu load
         let boundShiftX = Int(velocity.x / GlobalVars.tileSize)

@@ -18,17 +18,14 @@ class GameScene: Scene {
     // starting with level 0
     var level: Int = 0 {
         didSet {
-            updateLoops = []
-            levelManager.loadLevel(level: level)
-            appendMainUpdateLoop()
-            update()
-            update()
-            compile()
+            levelWasSet = true
         }
     }
+    var levelWasSet = false
     let UI = Node()
     
-    var ambience: Ambience = Ambience()
+    var ambienceFG: Ambience = Ambience()
+    var ambienceBG: Ambience = Ambience()
     
     // save states
     let saveStateManager = SaveStateManager()
@@ -48,15 +45,22 @@ class GameScene: Scene {
     override func present() {
         super.present()
         sceneType = .game
+        
         levelManager = LevelManager(parent: self)
         GlobalVars.blockTypes = BlockTypes(sized: GlobalVars.tileSize)
         GlobalVars.blockTypes.genBlocks()
+        
         level = 0
+        setLevel()
+        
         initUI()
         
-        let path = Bundle.main.path(forResource: "First Song", ofType: "m4a")!
+        let path = Bundle.main.path(forResource: "The Edge", ofType: "mp3")!
         let url = URL(fileURLWithPath: path)
         gameViewController.play(sound: url, looped: -1)
+        
+        // post initialization
+        saveStateManager.scene = self
     }
     
     func initUI() {
@@ -66,14 +70,15 @@ class GameScene: Scene {
         UI.geometry.node = UI
         UI.geometry.dynamic = true
         
-        // jump button
+        // jump button //
         space = Button()
         space.label = "space"
         space.geometry.dynamic = true
         let spaceButtonClosure = { () -> () in
             self.input.jump = true
         }
-        space.spawn(in: UI, at: Point(x: 0, y: self.size.height/10 - self.size.height/2), withSize: Size(width: self.size.width, height: self.size.height/5), onTouch: spaceButtonClosure)
+        space.spawn(in: UI, at: Point(x: 0, y: self.size.height/8 - self.size.height/2), withSize: Size(width: self.size.width, height: self.size.height/4), onTouch: spaceButtonClosure)
+        
         // jump button shading
         space.geometry.vertices[0].color = Color(r: 1, g: 1, b: 1, a: 0.3) // bottom left
         space.geometry.vertices[1].color = Color(r: 1, g: 1, b: 1, a: 0.3) // bottom right
@@ -82,6 +87,9 @@ class GameScene: Scene {
         space.geometry.vertices[4].color = space.geometry.vertices[1].color // bottom right
         space.geometry.vertices[5].color = Color(r: 1, g: 1, b: 1, a: 0) // top right
         // end jump button shading
+        // end jump button code
+        
+        // left and right buttons
         // feedback
         leftFeedback = Node()
         leftFeedback.geometry.dynamic = true
@@ -104,15 +112,26 @@ class GameScene: Scene {
         Rasterizer.rasterize(menuButtonShape, repeating: block, sized: tileSize/2, in: menuButton)
         
         let menuButtonClosure = { () -> () in
-            let storyBoard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
+            /*let storyBoard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
             let newViewController = storyBoard.instantiateViewController(withIdentifier: "Menu View Controller") as! MenuViewController
-            self.gameViewController.present(newViewController, animated: true, completion: nil)
+            self.gameViewController.present(newViewController, animated: true, completion: nil)*/
+            
+            self.levelManager.loadLevel(level: 0)
         }
         menuButton.spawn(in: UI, at: Point(x: -self.size.width/2 + menuButton.size.width, y: self.size.height/2 - menuButton.size.height), withSize: menuButton.size, onTouch: menuButtonClosure)
         menuButton.geometry.vertices = []
     }
     
     // MARK: Update
+    
+    // sets level to level number in level var
+    func setLevel() {
+        self.updateLoops = []
+        self.levelManager.loadLevel(level: self.level)
+        self.appendMainUpdateLoop()
+        self.compile()
+        levelWasSet = false // level integer is no longer newly set, game system level has now loaded/reflects new integer
+    }
     
     func appendMainUpdateLoop() {
         updateLoops.append({() -> (Bool) in
@@ -122,10 +141,14 @@ class GameScene: Scene {
                 self.levelManager.restore(saveState: self.saveStateManager)
                 self.compile()
             }
-            self.ambience.position.y += 0.1
+            self.ambienceFG.position.y += 0.1
             //self.levelManager.world.scale.x*=1.01
             //self.levelManager.world.scale.y*=1.01
             //self.levelManager.world.isDirty = true
+            if self.levelWasSet {
+                self.setLevel()
+                // initially had 'return true' here to delete loop from array at return but realized array is cleared with self.updateLoops = [] . In fact, 'return true' may delete the freshly appended above update loop
+            }
             return false
         })
     }
@@ -145,13 +168,13 @@ class GameScene: Scene {
     var ambienceTexture: MTLTexture! = nil
     
     var counter: Float = 0.0
-    var bgDistortionBuffer: MTLBuffer! = nil
+    var bgDistortionBuffer: MTLBuffer! = nil // probably the values for the counters to modulate the compiled/coded animations
     
     var shadowOffset: Vector2! = nil
     var secondaryOffset: Vector2 = Vector2(0, 0)
     var delta: Float = 0.5
     var shadowOffsetUniform: BufferManager! = nil
-    var shadowColor: [Float] = [0.0, 0.0, 0.0, 0.5]
+    var shadowColor: [Float] = [0.0, 0.0, 0.0, 0.833]
     var shadowColorBuffer: MTLBuffer! = nil
     //var shadowProjectionMatrix: [Float] = []
     //var lights: [Light] = []
@@ -164,7 +187,7 @@ class GameScene: Scene {
         bgDistortionBuffer = device.makeBuffer(length: 64, options: [])
         
         // shadows
-        shadowOffset = Vector2(-GlobalVars.tileSize*1.5, -GlobalVars.tileSize*1.3)
+        shadowOffset = Vector2(-GlobalVars.tileSize*2.4, -GlobalVars.tileSize*0.35)
         //shadowProjectionMatrix = gameViewController.projectionMatrix
         
         /*
@@ -347,25 +370,15 @@ class GameScene: Scene {
         }
     }
     
-    func prepareAmbience(colored color: Color) {
-        ambience.instances = []
-        ambience.generateParticles(numbered: Int(Options.ambienceParticleCount.pointee), from: Vector2(-self.size.width*2, -self.size.height*2), to: Vector2(self.size.width*2, self.size.height*2), from: Vector2(1, 1), to: Vector2(30, 30), from: Color(r: color.r, g: color.g, b: color.b, a: color.a), to: Color(r: color.r, g: color.g, b: color.b, a: color.a))
-        ambience.geometry.vertices = Rectangle(size: Size(width: tileSize/4, height: tileSize/4), color: Color(r: 1, g: 1, b: 1, a: 0.5)).toIndexedVertices()
-        ambience.geometry.node = ambience
-        ambience.geometry.masterCompile()
-        ambience.compileBuffer(with: device)
-        ambience.position.y = 0
-    }
-    
     override func render(with renderer: Renderer, and commandQueue: MTLCommandQueue) {
         let commandBuffer = commandQueue.makeCommandBuffer()
         commandBuffer?.label = "Frame command buffer"
         if let currentDrawable = view.currentDrawable {
             mainRenderPassDescriptor.colorAttachments[0].texture = currentDrawable.texture
             // drawing the background
-            renderer.initEncoder(with: commandBuffer!, and: mainRenderPassDescriptor!, and: bgDistortionPipelineState)
-            counter += 0.003
-            memcpy(bgDistortionBuffer.contents(), [counter, tileSize/self.size.width], 64)
+            renderer.initEncoder(with: commandBuffer!, and: mainRenderPassDescriptor!, and: plainRenderPipelineState)
+            //counter += 0.003
+            //memcpy(bgDistortionBuffer.contents(), [counter, tileSize/self.size.width], 64)
             renderer.encoder.setVertexBuffer(bgDistortionBuffer, offset: 0, index: 2)
             //memcpy(lightOffset.contents(), [-levelManager.world.position.x, levelManager.world.position.y], 64)
             //renderer.encoder.setFragmentBuffer(lightsBuffer, offset: 0, index: 0)
@@ -436,13 +449,13 @@ class GameScene: Scene {
             renderer.renderMaster(levelManager.world, withChildren: true)
             
             if Options.ambienceBool.pointee {
-                // rendering the ambience
-                ambience.calculateScreenMatrix()
+                // rendering the forgeground ambience
+                ambienceFG.calculateScreenMatrix()
                 renderer.encoder.setRenderPipelineState(ambienceRenderPipelineState)
-                renderer.encoder.setVertexBuffer(ambience.geometry.masterBuffer!, offset: 0, index: 0)
-                renderer.encoder.setVertexBuffer(renderer.transformationMatricesBuffers.nextUniformsBuffer(of: renderer.projectionMatrix, and: levelManager.world.transformationToScreen.toArray(), and: ambience.transformation.toArray()), offset: 0, index: 1)
-                renderer.encoder.setVertexBuffer(ambience.instancesBuffer, offset: 0, index: 2)
-                renderer.encoder.drawIndexedPrimitives(type: .triangle, indexCount: ambience.indexCount, indexType: ambience.indexType, indexBuffer: ambience.indexBuffer, indexBufferOffset: 0, instanceCount: ambience.instances.count)
+                renderer.encoder.setVertexBuffer(ambienceFG.geometry.masterBuffer!, offset: 0, index: 0)
+                renderer.encoder.setVertexBuffer(renderer.transformationMatricesBuffers.nextUniformsBuffer(of: renderer.projectionMatrix, and: levelManager.world.transformationToScreen.toArray(), and: ambienceFG.transformation.toArray()), offset: 0, index: 1)
+                renderer.encoder.setVertexBuffer(ambienceFG.instancesBuffer, offset: 0, index: 2)
+                renderer.encoder.drawIndexedPrimitives(type: .triangle, indexCount: ambienceFG.indexCount.0!, indexType: ambienceFG.indexType, indexBuffer: ambienceFG.indexBuffer, indexBufferOffset: 0, instanceCount: ambienceFG.instances.count)
                 renderer.endEncoding(with: device)
                 
                 var ambienceBlurredTexture: MTLTexture! = nil
@@ -578,32 +591,66 @@ class GameScene: Scene {
         }
     }
     
+    func prepareAmbience(colored color: Color) {
+        ambienceFG.instances = []
+        ambienceFG.generateParticles(numbered: Int(Options.ambienceParticleCount.pointee/2), from: Vector2(-self.size.width*2, -self.size.height*2), to: Vector2(self.size.width*2, self.size.height*2), from: Vector2(1, 1), to: Vector2(5.0, 5.0), from: Color(r: color.r, g: color.g, b: color.b, a: color.a), to: Color(r: color.r, g: color.g, b: color.b, a: color.a))
+        ambienceFG.geometry.vertices = Rectangle(size: Size(width: tileSize/4, height: tileSize/4), color: Color(r: 1, g: 1, b: 1, a: 0.5)).toIndexedVertices()
+        ambienceFG.geometry.node = ambienceFG
+        ambienceFG.geometry.masterCompile()
+        ambienceFG.compileBuffers(with: device)
+        ambienceFG.position.y = 0
+    }
+    
+    
     func generateBackground(topLeft color1: Color, topRight color2: Color, bottomLeft color3: Color, bottomRight color4: Color) {
-        let blockSize = tileSize*2
+        self.geometry.vertices = [
+            Vertex(position: Vector3(x: -size.width/2, y: size.height/2, z: 0), color: color1),
+            Vertex(position: Vector3(x: -size.width/2, y: -size.height/2, z: 0), color: color3),
+            Vertex(position: Vector3(x: size.width/2, y: size.height/2, z: 0), color: color2),
+            Vertex(position: Vector3(x: -size.width/2, y: -size.height/2, z: 0), color: color3),
+            Vertex(position: Vector3(x: size.width/2, y: -size.height/2, z: 0), color: color4),
+            Vertex(position: Vector3(x: size.width/2, y: size.height/2, z: 0), color: color2)
+        ]
+    }
+    
+    func generateGridBackground(topLeft color1: Color, topRight color2: Color, bottomLeft color3: Color, bottomRight color4: Color) {
+        let blockSize = tileSize*4
         var gridSize = Size(width: size.width/blockSize + 3, height: size.height/blockSize + 3)
         var vertices: [[Vertex]] = Array(repeating: Array(repeating: Vertex(position: Vector3(x: 0, y: 0, z: 0), color: Color(r: 0, g: 0, b: 0, a: 0)), count: Int(gridSize.height)), count: Int(gridSize.width))
         gridSize.width = Float(vertices.count)
         gridSize.height = Float(vertices[0].count)
+        
         for x in 0..<Int(gridSize.width) {
             for y in 0..<Int(gridSize.height) {
+                
+                // gradient
                 let xRatio = Float(x)/gridSize.width
                 let yRatio = Float(y)/gridSize.height
                 var red = yRatio*(xRatio*color1.r + (1-xRatio)*color2.r) + (1-yRatio)*(xRatio*color3.r + (1-xRatio)*color4.r)
                 var green = yRatio*(xRatio*color1.g + (1-xRatio)*color2.g) + (1-yRatio)*(xRatio*color3.g + (1-xRatio)*color4.g)
                 var blue = yRatio*(xRatio*color1.b + (1-xRatio)*color2.b) + (1-yRatio)*(xRatio*color3.b + (1-xRatio)*color4.b)
-                let coefficient = 1 + Float(arc4random()) / Float(UINT32_MAX)/3 - 0.163
+                // randomly darken spots
+                let coefficient = Float(arc4random()) / Float(UINT32_MAX)//3 - 0.163
                 red *= coefficient
                 green *= coefficient
                 blue *= coefficient
                 let baseColor = Color(r: red, g: green, b: blue, a: 1)
-                vertices[x][y] = Vertex(position: Vector3(x: (Float(x)-gridSize.width/2)*blockSize, y: (Float(y)-gridSize.height/2)*blockSize, z: 0), color: baseColor)
+                
+                vertices[x][y] = Vertex(position:
+                                            
+                                            Vector3(x: (Float(x)-gridSize.width/2)*blockSize, y: (Float(y)-gridSize.height/2)*blockSize, z: 0),
+                                        
+                                        color: baseColor)
             }
         }
         
+        // geometry generation
         self.geometry.vertices = []
         
         for x in 0..<Int(gridSize.width) {
             for y in 0..<Int(gridSize.height) {
+                // triangularization of grid
+                
                 if x >= 0 && x < Int(gridSize.width)-1 {
                     if y >= 0 && y < Int(gridSize.height)-1 {
                        self.geometry.vertices.append(contentsOf: [vertices[x][y], vertices[x+1][y], vertices[x][y+1]])
