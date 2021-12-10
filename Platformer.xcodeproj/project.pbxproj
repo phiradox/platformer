@@ -42,18 +42,7 @@
 		7A95A2BD1DB3C8D9002E77BF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7A95A2BB1DB3C8D9002E77BF /* LaunchScreen.storyboard */; };
 		7A95A2C81DB3C8D9002E77BF /* PlatformerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A95A2C71DB3C8D9002E77BF /* PlatformerTests.swift */; };
 		7A95A2D31DB3E89E002E77BF /* Block.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A95A2D21DB3E89E002E77BF /* Block.swift */; };
-		7A98F6A61FC9E9FD00C9FB8A /* MenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A98F6A51FC9E9FD00C9FB8A /* MenuViewController.swift */; };
 		7A98F6A81FC9ED5000C9FB8A /* CloudBackgroundScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A98F6A71FC9ED5000C9FB8A /* CloudBackgroundScene.swift */; };
-		7A98F6AC1FCB41C500C9FB8A /* BackgroundView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A98F6AB1FCB41C500C9FB8A /* BackgroundView.swift */; };
-		7A98F6AE1FCB5E9000C9FB8A /* CustomLevelsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A98F6AD1FCB5E8F00C9FB8A /* CustomLevelsView.swift */; };
-		7A98F6B11FCBB8A000C9FB8A /* Up Icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 7A98F6B01FCBB8A000C9FB8A /* Up Icon.png */; };
-		7A98F6B31FCC876100C9FB8A /* Add Icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 7A98F6B21FCC876100C9FB8A /* Add Icon.png */; };
-		7A98F6B51FCC927400C9FB8A /* Left Icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 7A98F6B41FCC927400C9FB8A /* Left Icon.png */; };
-		7A9D86131FCCBD3600EC4BF4 /* Edit Icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 7A9D86101FCCBD3600EC4BF4 /* Edit Icon.png */; };
-		7A9D86141FCCBD3600EC4BF4 /* Play Icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 7A9D86111FCCBD3600EC4BF4 /* Play Icon.png */; };
-		7A9D86151FCCBD3600EC4BF4 /* Delete Icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 7A9D86121FCCBD3600EC4BF4 /* Delete Icon.png */; };
-		7A9D86171FCCE6DC00EC4BF4 /* Check Mark.png in Resources */ = {isa = PBXBuildFile; fileRef = 7A9D86161FCCE6DC00EC4BF4 /* Check Mark.png */; };
-		7A9D86191FCCE82A00EC4BF4 /* GraphicsOptionsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A9D86181FCCE82A00EC4BF4 /* GraphicsOptionsView.swift */; };
 		7AAE003A1F30F10F00C71066 /* Level.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AAE00391F30F10F00C71066 /* Level.swift */; };
 		7AAE003C1F30FE5600C71066 /* SaveData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AAE003B1F30FE5600C71066 /* SaveData.swift */; };
 		7AAE21BE1F2BA61F00D7B361 /* InstancedNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AAE21BD1F2BA61F00D7B361 /* InstancedNode.swift */; };
@@ -119,18 +108,7 @@
 		7A95A2C71DB3C8D9002E77BF /* PlatformerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlatformerTests.swift; sourceTree = "<group>"; };
 		7A95A2C91DB3C8D9002E77BF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		7A95A2D21DB3E89E002E77BF /* Block.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Block.swift; sourceTree = "<group>"; };
-		7A98F6A51FC9E9FD00C9FB8A /* MenuViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuViewController.swift; sourceTree = "<group>"; };
 		7A98F6A71FC9ED5000C9FB8A /* CloudBackgroundScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloudBackgroundScene.swift; sourceTree = "<group>"; };
-		7A98F6AB1FCB41C500C9FB8A /* BackgroundView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackgroundView.swift; sourceTree = "<group>"; };
-		7A98F6AD1FCB5E8F00C9FB8A /* CustomLevelsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomLevelsView.swift; sourceTree = "<group>"; };
-		7A98F6B01FCBB8A000C9FB8A /* Up Icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Up Icon.png"; path = "App Icon Sizes/Media/Up Icon.png"; sourceTree = SOURCE_ROOT; };
-		7A98F6B21FCC876100C9FB8A /* Add Icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Add Icon.png"; path = "App Icon Sizes/Media/Add Icon.png"; sourceTree = SOURCE_ROOT; };
-		7A98F6B41FCC927400C9FB8A /* Left Icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Left Icon.png"; path = "App Icon Sizes/Media/Left Icon.png"; sourceTree = SOURCE_ROOT; };
-		7A9D86101FCCBD3600EC4BF4 /* Edit Icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Edit Icon.png"; path = "App Icon Sizes/Media/Edit Icon.png"; sourceTree = SOURCE_ROOT; };
-		7A9D86111FCCBD3600EC4BF4 /* Play Icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Play Icon.png"; path = "App Icon Sizes/Media/Play Icon.png"; sourceTree = SOURCE_ROOT; };
-		7A9D86121FCCBD3600EC4BF4 /* Delete Icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Delete Icon.png"; path = "App Icon Sizes/Media/Delete Icon.png"; sourceTree = SOURCE_ROOT; };
-		7A9D86161FCCE6DC00EC4BF4 /* Check Mark.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Check Mark.png"; path = "App Icon Sizes/Media/Check Mark.png"; sourceTree = SOURCE_ROOT; };
-		7A9D86181FCCE82A00EC4BF4 /* GraphicsOptionsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphicsOptionsView.swift; sourceTree = "<group>"; };
 		7AAE00391F30F10F00C71066 /* Level.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Level.swift; sourceTree = "<group>"; };
 		7AAE003B1F30FE5600C71066 /* SaveData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SaveData.swift; sourceTree = "<group>"; };
 		7AAE21BD1F2BA61F00D7B361 /* InstancedNode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InstancedNode.swift; sourceTree = "<group>"; };
@@ -187,10 +165,6 @@
 			isa = PBXGroup;
 			children = (
 				7A95A2B41DB3C8D9002E77BF /* GameViewController.swift */,
-				7A98F6A51FC9E9FD00C9FB8A /* MenuViewController.swift */,
-				7A98F6AD1FCB5E8F00C9FB8A /* CustomLevelsView.swift */,
-				7A98F6AB1FCB41C500C9FB8A /* BackgroundView.swift */,
-				7A9D86181FCCE82A00EC4BF4 /* GraphicsOptionsView.swift */,
 				7A78694A1F31FFBE00F013BB /* GlobalVars.swift */,
 				7A2AC5A81F34C11600E27DA0 /* Options.swift */,
 				7AAE003B1F30FE5600C71066 /* SaveData.swift */,
@@ -328,13 +302,6 @@
 		7A98F6AF1FCBB88A00C9FB8A /* Media */ = {
 			isa = PBXGroup;
 			children = (
-				7A9D86161FCCE6DC00EC4BF4 /* Check Mark.png */,
-				7A9D86121FCCBD3600EC4BF4 /* Delete Icon.png */,
-				7A9D86101FCCBD3600EC4BF4 /* Edit Icon.png */,
-				7A9D86111FCCBD3600EC4BF4 /* Play Icon.png */,
-				7A98F6B41FCC927400C9FB8A /* Left Icon.png */,
-				7A98F6B21FCC876100C9FB8A /* Add Icon.png */,
-				7A98F6B01FCBB8A000C9FB8A /* Up Icon.png */,
 			);
 			name = Media;
 			sourceTree = "<group>";
@@ -491,17 +458,10 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				7A98F6B31FCC876100C9FB8A /* Add Icon.png in Resources */,
-				7A98F6B11FCBB8A000C9FB8A /* Up Icon.png in Resources */,
-				7A9D86131FCCBD3600EC4BF4 /* Edit Icon.png in Resources */,
 				7A95A2B81DB3C8D9002E77BF /* Main.storyboard in Resources */,
 				7A95A2BA1DB3C8D9002E77BF /* Assets.xcassets in Resources */,
-				7A9D86151FCCBD3600EC4BF4 /* Delete Icon.png in Resources */,
-				7A98F6B51FCC927400C9FB8A /* Left Icon.png in Resources */,
-				7A9D86141FCCBD3600EC4BF4 /* Play Icon.png in Resources */,
 				7A95A2BD1DB3C8D9002E77BF /* LaunchScreen.storyboard in Resources */,
 				0BFABB932672B843006E60F7 /* The Edge.mp3 in Resources */,
-				7A9D86171FCCE6DC00EC4BF4 /* Check Mark.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -522,11 +482,9 @@
 				7AAE003A1F30F10F00C71066 /* Level.swift in Sources */,
 				7A5AD4A21E61057F009D5422 /* Structs.swift in Sources */,
 				7A95A2B31DB3C8D9002E77BF /* GameScene.swift in Sources */,
-				7A98F6AC1FCB41C500C9FB8A /* BackgroundView.swift in Sources */,
 				7ADCB3AB1E614A6100B9DDE1 /* Scene.swift in Sources */,
 				7AEB9DEC1F30A70700104F2D /* TextNode.swift in Sources */,
 				7A1C23951DEA223F00D06629 /* LevelManager.swift in Sources */,
-				7A9D86191FCCE82A00EC4BF4 /* GraphicsOptionsView.swift in Sources */,
 				7A98F6A81FC9ED5000C9FB8A /* CloudBackgroundScene.swift in Sources */,
 				7A3F6B471FB2817D00582F64 /* Color Picker.swift in Sources */,
 				7A5841511E57C24800DEEDF1 /* EditorNode.swift in Sources */,
@@ -544,7 +502,6 @@
 				7A1D38121F2EFC8800A457F5 /* Menus.swift in Sources */,
 				7A5AD4961E5FF3A8009D5422 /* Node.swift in Sources */,
 				7AB914711E3EE53D00416891 /* Button.swift in Sources */,
-				7A98F6AE1FCB5E9000C9FB8A /* CustomLevelsView.swift in Sources */,
 				7AAE21BE1F2BA61F00D7B361 /* InstancedNode.swift in Sources */,
 				7A6E5E001E53D56900C0594B /* SKScrollView.swift in Sources */,
 				7A5A62FF1DD635D700FB293E /* CollisionComponent.swift in Sources */,
@@ -552,7 +509,6 @@
 				7A5DB1D11DC58B970048BA22 /* Player.swift in Sources */,
 				7A5AD49A1E60CB97009D5422 /* Vertex.swift in Sources */,
 				7A78694B1F31FFBE00F013BB /* GlobalVars.swift in Sources */,
-				7A98F6A61FC9E9FD00C9FB8A /* MenuViewController.swift in Sources */,
 				7A3F6B491FB282EA00582F64 /* Touch Delegate.swift in Sources */,
 				7A44E04F1E5682EA00B7277D /* LevelEditorScene.swift in Sources */,
 				7A5AD49C1E60CD85009D5422 /* Renderer.swift in Sources */,

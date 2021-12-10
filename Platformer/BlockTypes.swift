@@ -32,6 +32,7 @@ class BlockTypes {
         editorBlocks["X"] = (label: "Wall", block: block)
         
         // Grass
+        
         block = Block()
         block.geometry.node = block
         block.geometry.color = Color(r: 0, g: 1, b: 0, a: 1)

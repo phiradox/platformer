@@ -611,9 +611,9 @@ class GameScene: Scene {
             Vertex(position: Vector3(x: -size.width/2, y: size.height/2, z: 0), color: color1),
             Vertex(position: Vector3(x: -size.width/2, y: -size.height/2, z: 0), color: color3),
             Vertex(position: Vector3(x: size.width/2, y: size.height/2, z: 0), color: color2),
+            Vertex(position: Vector3(x: size.width/2, y: size.height/2, z: 0), color: color2),
             Vertex(position: Vector3(x: -size.width/2, y: -size.height/2, z: 0), color: color3),
-            Vertex(position: Vector3(x: size.width/2, y: -size.height/2, z: 0), color: color4),
-            Vertex(position: Vector3(x: size.width/2, y: size.height/2, z: 0), color: color2)
+            Vertex(position: Vector3(x: size.width/2, y: -size.height/2, z: 0), color: color4)
         ]
     }
     

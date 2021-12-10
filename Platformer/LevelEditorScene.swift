@@ -6,7 +6,6 @@
 //  Copyright © 2017 Ariston Kalpaxis. All rights reserved.
 
 import Foundation
-import SpriteKit
 import UIKit
 
 class LevelEditorScene: Scene {
@@ -26,6 +25,8 @@ class LevelEditorScene: Scene {
     
     static var levelBeingEditted: Int! = nil
     var level: Level! = nil
+    
+    var righty: Bool = true
     
     override func present() {
         // initialize block selection menu
@@ -53,7 +54,7 @@ class LevelEditorScene: Scene {
         } else {
             // initialize the beginning node
             let editorNode = EditorNode()
-            editorNode.spawn(in: levelNode, at: Point(x: self.size.width*5, y: -self.size.height*5), withSize: Size(width: tileSize * 2, height: tileSize * 2), onTouch: {() -> () in })
+            editorNode.spawn(in: levelNode, at: Point(x: self.size.width*5, y: -self.size.height*5), withSize: Size(width: tileSize, height: tileSize), onTouch: {() -> () in })
             //editorNodes.append(editorNode)
             self.level = Level(named: "Untitled", levelData: [""], ambience: Color(r: 1.0, g: 0.0, b: 0.0, a: 1.0), background: Color(r: 0.1, g: 0.0, b: 0.3, a: 1.0), mainBlockColor: Color(r: 0.7, g: 0.7, b: 0.7, a: 1.0), secondaryBlockColor: Color(r: 0.0, g: 1.0, b: 0.0, a: 1.0))
         }
@@ -64,11 +65,22 @@ class LevelEditorScene: Scene {
     }
     
     func initBlockSelectionMenu() {
-        blockSelectionMenu = SKScrollView(in: self, of: blockButtons, frame: CGRect(x: 0, y: 0, width: CGFloat(tileSize * 4), height: CGFloat(self.size.height)), with: .vertical)
-        // 1 added to count for custom generated "player" block seen below
-        blockSelectionMenu.contentSize = CGSize(width: CGFloat(tileSize * 4), height: CGFloat(tileSize * 4 * Float(blockTypes.editorBlocks.count+1)))
+        let blockSelectionMenuWidth = tileSize*4
+        let blockSelectionMenuHeight = blockSelectionMenuWidth * Float(blockTypes.editorBlocks.count+1)// 1 added to count for custom generated "player" block seen below
+        
+        blockSelectionMenu = SKScrollView(in: self,
+                                          of: blockButtons,
+                                          frame: CGRect(
+                                            x: righty ? CGFloat(self.size.width-blockSelectionMenuWidth) : 0,
+                                            y: 0,
+                                            width: CGFloat(blockSelectionMenuWidth),
+                                            height: CGFloat(self.size.height)), with: .vertical)
+        
+        blockSelectionMenu.contentSize = CGSize(width: CGFloat(blockSelectionMenuWidth), height: CGFloat(blockSelectionMenuHeight))
+        
         blockButtons.geometry.dynamic = true
-        blockButtons.position.x = -self.size.width/2
+        blockButtons.position.x = righty ? self.size.width/2-blockSelectionMenuWidth : -self.size.width/2+blockSelectionMenuWidth
+        
         // creating a button with a display block for each block type
         for iterated: (offset: Int, element: (key: Character, value: (label: String, block: Block))) in blockTypes.editorBlocks.enumerated() {
             let button = Button()
@@ -76,7 +88,13 @@ class LevelEditorScene: Scene {
                 self.selectedBlock = iterated.element.value.block
                 self.selectedBlock.label = String(iterated.element.key)
             }
-            button.spawn(in: blockButtons, at: Point(x: tileSize * 2, y: self.size.height/2-Float(iterated.offset) * tileSize * 4 - tileSize * 2), withSize: Size(width: tileSize * 4, height: tileSize * 4), onTouch: action)
+            button.spawn(in: blockButtons,
+                         at: Point(
+                            x: tileSize * 2,
+                            y: self.size.height/2-Float(iterated.offset) * tileSize * 4 - tileSize * 2),
+                         withSize: Size(
+                            width: blockSelectionMenuWidth,
+                            height: blockSelectionMenuWidth), onTouch: action)
             button.geometry.color = Color(r: 0.5, g: 0.5, b: 0.5, a: 0.5)
             let block = iterated.element.value.block.duplicate()
             block.spawn(at: Point(x: 0, y: 0), in: button, size: Size(width: tileSize, height: tileSize))
@@ -121,7 +139,10 @@ class LevelEditorScene: Scene {
             self.levelScrollView.removeFromSuperview()
             self.gameViewController.present(MenuScene(of: self.size, and: self.tileSize, in: self.view, and: self.gameViewController, device: self.device))
         }
-        menuButton.spawn(in: UI, at: Point(x: self.size.width/2 - menuButton.size.width, y: self.size.height/2 - menuButton.size.height), withSize: menuButton.size, onTouch: menuButtonClosure)
+        menuButton.spawn(in: UI, at: Point(
+                            x: (righty ? -self.size.width/2 + menuButton.size.width:self.size.width/2-menuButton.size.width),
+                            y: self.size.height/2 - menuButton.size.height), withSize: menuButton.size, onTouch: menuButtonClosure
+        )
         menuButton.geometry.vertices = []
         menuButton.geometry.dynamic = true
         
@@ -140,7 +161,9 @@ class LevelEditorScene: Scene {
             self.blockSelectionMenu.removeFromSuperview()
             self.levelScrollView.removeFromSuperview()
         }
-        playButton.spawn(in: UI, at: Point(x: self.size.width/2 - playButton.size.width, y: -self.size.height/2 + playButton.size.height), withSize: playButton.size, onTouch: playButtonClosure)
+        playButton.spawn(in: UI, at: Point(
+                            x: (righty ? -self.size.width/2 + playButton.size.width : self.size.width/2-playButton.size.width),
+                            y: -self.size.height/2 + playButton.size.height), withSize: playButton.size, onTouch: playButtonClosure)
         playButton.geometry.vertices = []
         playButton.geometry.dynamic = true
         
@@ -157,7 +180,9 @@ class LevelEditorScene: Scene {
             self.UI.addChild(node)
             Menus.prepare(.saveLevelMenu, in: node, in: self)
         }
-        saveButton.spawn(in: UI, at: Point(x: self.size.width/2 - saveButton.size.width*2.5, y: -self.size.height/2 + saveButton.size.height), withSize: saveButton.size, onTouch: saveButtonClosure)
+        saveButton.spawn(in: UI, at: Point(
+                            x: (righty ? self.size.width/2 - saveButton.size.width*2.5:-self.size.width/2+saveButton.size.width*2.5),
+                            y: -self.size.height/2 + saveButton.size.height), withSize: saveButton.size, onTouch: saveButtonClosure)
         saveButton.geometry.vertices = []
         saveButton.geometry.dynamic = true
         
@@ -174,14 +199,13 @@ class LevelEditorScene: Scene {
         Rasterizer.rasterize(optionsShape, repeating: block, sized: tileSize/2, in: optionsButton)
         
         let optionsButtonClosure = { () -> () in
-            //let node = Node()
-            //self.UI.addChild(node)
-            //Menus.prepare(.levelOptionsMenu, in: node, in: self)
             let colorPicker = ColorPicker()
             colorPicker.present(in: self, from: self.UI, initialColor: nil, onCompletion: {(Color) -> () in })
             self.levelScrollView.isScrollEnabled = false
         }
-        optionsButton.spawn(in: UI, at: Point(x: -self.size.width/2 + blockSelectionMenu.contentSize.toSize().width + optionsButton.size.width/2 + tileSize, y: -self.size.height/2 + optionsButton.size.height), withSize: saveButton.size, onTouch: optionsButtonClosure)
+        optionsButton.spawn(in: UI, at: Point(
+                                x: -self.size.width/2 + blockSelectionMenu.contentSize.toSize().width + optionsButton.size.width/2 + tileSize,
+                                y: -self.size.height/2 + optionsButton.size.height), withSize: saveButton.size, onTouch: optionsButtonClosure)
         optionsButton.geometry.vertices = []
         optionsButton.geometry.dynamic = true
     }
@@ -194,7 +218,10 @@ class LevelEditorScene: Scene {
             for (x, char) in row.enumerated() {
                 if char != " " {
                     let editorNode = EditorNode()
-                    editorNode.spawn(in: levelNode, at: Point(x: Float(x)*tileSize*2 - levelSizeInEditor.width/2 + offset.x, y: Float(y)*tileSize*2 - levelSizeInEditor.height/2 + offset.y), withSize: Size(width: tileSize*2, height: tileSize*2), onTouch: {() -> () in })
+                    editorNode.spawn(in: levelNode, at: Point(
+                                        x: Float(x)*tileSize*2 - levelSizeInEditor.width/2 + offset.x,
+                                        y: Float(y)*tileSize*2 - levelSizeInEditor.height/2 + offset.y),
+                                     withSize: Size(width: tileSize*2, height: tileSize*2), onTouch: {() -> () in })
                     editorNode.setBlock(to: char)
                 }
             }
