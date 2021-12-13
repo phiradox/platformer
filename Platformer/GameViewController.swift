@@ -44,7 +44,7 @@ class GameViewController: UIViewController, MTKViewDelegate {
         view.delegate = self
         view.framebufferOnly = false
         
-        let tileSize = 10 * Float(view.contentScaleFactor)
+        let tileSize = 7 * Float(view.contentScaleFactor)
         GlobalVars.tileSize = tileSize
         
         // projection matrix

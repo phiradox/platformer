@@ -33,7 +33,7 @@ class EditorNode: Button {
             empty = false
             self.block?.removeFromParent()
             let newBlock = Block()
-            newBlock.geometry.vertices = Rectangle(size: Size(width: self.size.width/2, height: self.size.height), color: Color(r: 1, g: 1, b: 1, a: 1)).toVertices()
+            newBlock.geometry.vertices = Rectangle(size: Size(width: GlobalVars.tileSize/2, height: GlobalVars.tileSize), color: Color(r: 1, g: 1, b: 1, a: 1)).toVertices()
             newBlock.label = "@"
             self.addChild(newBlock)
             self.block = newBlock

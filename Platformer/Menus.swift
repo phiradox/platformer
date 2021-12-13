@@ -36,7 +36,7 @@ class Menus {
             block.size = Size(width: menuScene.tileSize/2, height: menuScene.tileSize/2)
             
             let textContainer = Node()
-            let platformerText = TextNode(of: "PLATFORMER", madeOf: block, sized: GlobalVars.tileSize*2, at: Point(x: 0, y: 0))
+            let platformerText = TextNode(of: "PLATFORMER", madeOf: block, sized: GlobalVars.tileSize*3, at: Point(x: 0, y: 0))
             platformerText.compile()
             platformerText.position = Point(x: -platformerText.size.width/2, y: -platformerText.size.height/2)
             textContainer.addChild(platformerText)
@@ -45,7 +45,7 @@ class Menus {
             node.addChild(textContainer)
             
             let playButton = Button()
-            let playText = TextNode(of: "PLAY", madeOf: block, sized: GlobalVars.tileSize*1, at: Point(x: 0, y: 0))
+            let playText = TextNode(of: "PLAY", madeOf: block, sized: GlobalVars.tileSize*2, at: Point(x: 0, y: 0))
             playText.compile()
             playText.position = Point(x: -playText.size.width/2, y: -playText.size.height/2)
             playButton.addChild(playText)
@@ -67,7 +67,7 @@ class Menus {
             playButton.label = "Play button"
             
             let optionsButton = Button()
-            let optionsText = TextNode(of: "OPTIONS", madeOf: block, sized: GlobalVars.tileSize, at: Point(x: 0, y: 0))
+            let optionsText = TextNode(of: "OPTIONS", madeOf: block, sized: GlobalVars.tileSize*2, at: Point(x: 0, y: 0))
             optionsText.compile()
             optionsText.position = Point(x: -optionsText.size.width/2, y: -optionsText.size.height/2)
             optionsButton.addChild(optionsText)

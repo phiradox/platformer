@@ -162,8 +162,6 @@ class GameScene: Scene {
     var plainRenderPipelineState: MTLRenderPipelineState! = nil
     var shadowRenderPipelineState: MTLRenderPipelineState! = nil
     var bgDistortionPipelineState: MTLRenderPipelineState! = nil
-    //var spotlightRenderPipelineState: MTLRenderPipelineState! = nil
-    //var backgroundLightRenderPipelineState: MTLRenderPipelineState! = nil
     var ambienceRenderPipelineState: MTLRenderPipelineState! = nil
     var multiplyComputePipelineState: MTLComputePipelineState! = nil
     var addComputePipelineState: MTLComputePipelineState! = nil
