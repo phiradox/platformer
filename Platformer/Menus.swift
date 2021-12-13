@@ -89,6 +89,12 @@ class Menus {
         case .playMenu:
             // MARK: Play Menu
             
+            let menuScene = (scene as! MenuScene)
+            var block = Block()
+            block.geometry.color = Menus.globalUIColor
+            block.size = Size(width: menuScene.tileSize/2, height: menuScene.tileSize/2)
+            
+            // back button
             let back = [
                 "    X",
                 "  XX ",
@@ -96,28 +102,6 @@ class Menus {
                 "  XX ",
                 "    X"
             ]
-            
-            let menuScene = (scene as! MenuScene)
-            var block = Block()
-            block.geometry.color = Menus.globalUIColor
-            block.size = Size(width: menuScene.tileSize/2, height: menuScene.tileSize/2)
-            
-            let adventureText = TextNode(of: "ADVENTURE", madeOf: block, sized: GlobalVars.tileSize*2, at: Point(x: 0, y: 0))
-            adventureText.compile()
-            adventureText.position = Point(x: -adventureText.size.width/2, y: -adventureText.size.height/2)
-            let adventureButton = Button()
-            adventureButton.addChild(adventureText)
-            let adventureScript = {() -> () in
-                menuScene.scrollView.removeFromSuperview()
-                menuScene.gameViewController.present(GameScene(of: menuScene.size, and: menuScene.tileSize, in: menuScene.view, and: menuScene.gameViewController, device: menuScene.device))
-            }
-            adventureButton.spawn(in: node, at: Point(x: 0, y: menuScene.size.height/4), withSize: adventureText.size, onTouch: adventureScript)
-            adventureButton.geometry.vertices = []
-            adventureButton.label = "Adventure Button"
-            
-            block = Block()
-            block.geometry.color = Menus.globalUIColor
-            block.size = Size(width: menuScene.tileSize/2, height: menuScene.tileSize/2)
             
             let backButton = Button()
             let backScript = {() -> () in
@@ -136,7 +120,46 @@ class Menus {
             backButton.geometry.vertices = []
             backButton.label = "Back Button"
             
-            // Level editor button
+            
+            // adventure button
+            let adventureText = TextNode(of: "ADVENTURE", madeOf: block, sized: GlobalVars.tileSize*2, at: Point(x: 0, y: 0))
+            adventureText.compile()
+            adventureText.position = Point(x: -adventureText.size.width/2, y: -adventureText.size.height/2)
+            let adventureButton = Button()
+            adventureButton.addChild(adventureText)
+            let adventureScript = {() -> () in
+                menuScene.scrollView.removeFromSuperview()
+                menuScene.gameViewController.present(GameScene(of: menuScene.size, and: menuScene.tileSize, in: menuScene.view, and: menuScene.gameViewController, device: menuScene.device))
+            }
+            adventureButton.spawn(in: node, at: Point(
+                                    x: 0,
+                                    y: menuScene.size.height/4), withSize: adventureText.size, onTouch: adventureScript)
+            adventureButton.geometry.vertices = []
+            adventureButton.label = "Adventure Button"
+            
+            
+            // multiplayer button
+            let multiplayerText = TextNode(of: "MULTIPLAYER", madeOf: block, sized: GlobalVars.tileSize*2, at: Point(x: 0, y: 0))
+            multiplayerText.compile()
+            multiplayerText.position = Point(x: -multiplayerText.size.width/2, y: -multiplayerText.size.height/2)
+            
+             let multiplayerButton = Button()
+             let multiplayerScript = {() -> () in
+                let newNode = Node()
+                self.prepare(.editorMenu, in: newNode, in: scene)
+                newNode.geometry.dynamic = true
+                newNode.position.y = -menuScene.size.height
+                menuScene.UI.addChild(newNode)
+                menuScene.transition = Sweep(from: node, origin: true, to: newNode, duration: 0.5, onCompletion: {() -> () in
+                    node.removeFromParent()
+                    menuScene.transition = nil
+                })
+             }
+            multiplayerButton.addChild(multiplayerText)
+            multiplayerButton.spawn(in: node, at: Point(x: 0, y: 0), withSize: Size(width: multiplayerText.size.width, height: multiplayerText.size.height), onTouch: multiplayerScript)
+            multiplayerButton.geometry.vertices = []
+            
+            // Custom Levels button
             
             let customLevelsText = TextNode(of: "CUSTOM LEVELS", madeOf: block, sized: GlobalVars.tileSize*2, at: Point(x: 0, y: 0))
             customLevelsText.compile()
@@ -441,6 +464,7 @@ class Menus {
             secondaryBlockText.position.x = -scene.size.width/2 + GlobalVars.tileSize
             secondaryBlockText.position.y = -secondaryBlockText.size.height/2 - (scene.size.height - levelColorsText.size.height)/4
             node.addChild(secondaryBlockText)
+            // MARK: Options Main
         case .optionsMain:
             let menuScene = (scene as! MenuScene)
             let block = Block()
@@ -472,7 +496,7 @@ class Menus {
             backButton.geometry.vertices = []
             backButton.label = "Back Button"
             
-            // graphics text button
+            // graphics options button
             let graphicsButton = Button()
             let graphicsText = TextNode(of: "GRAPHICS", madeOf: block, sized: GlobalVars.tileSize*2, at: Point(x: 0, y: 0))
             graphicsText.compile()
@@ -489,10 +513,15 @@ class Menus {
                     menuScene.transition = nil
                 })
             }
-            graphicsButton.spawn(in: node, at: Point(x: 0, y: menuScene.size.height/4), withSize: Size(width: graphicsText.size.width, height: graphicsText.size.height), onTouch: graphicsScript)
+            graphicsButton.spawn(in: node, at: Point(
+                                    x: 0,
+                                    y: menuScene.size.height/4), withSize: Size(
+                                        width: graphicsText.size.width,
+                                        height: graphicsText.size.height), onTouch: graphicsScript)
             graphicsButton.geometry.vertices = []
             graphicsButton.label = "Graphics options button"
             
+            // game options button
             let gameButton = Button()
             let gameText = TextNode(of: "GAME", madeOf: block, sized: GlobalVars.tileSize*2, at: Point(x: 0, y: 0))
             gameText.compile()
@@ -509,9 +538,39 @@ class Menus {
                     menuScene.transition = nil
                 })
             }
-            gameButton.spawn(in: node, at: Point(x: 0, y: 0), withSize: Size(width: gameText.size.width, height: gameText.size.height), onTouch: gameScript)
+            gameButton.spawn(in: node, at: Point(
+                                x: 0,
+                                y: 0), withSize: Size(
+                                    width: gameText.size.width,
+                                    height: gameText.size.height), onTouch: gameScript)
             gameButton.geometry.vertices = []
             gameButton.label = "Game options button"
+            
+            // level editor options button
+            let levelEditorOptionsButton = Button()
+            let levelEditorText = TextNode(of: "LEVEL EDITOR", madeOf: block, sized: GlobalVars.tileSize*2, at: Point(x: 0, y: 0))
+            levelEditorText.compile()
+            levelEditorText.position = Point(x: -levelEditorText.size.width/2, y: -levelEditorText.size.height/2)
+            levelEditorOptionsButton.addChild(levelEditorText)
+            let levelEditorScript = {() -> () in
+                let newNode = Node()
+                self.prepare(.graphicsOptions, in: newNode, in: scene)
+                newNode.geometry.dynamic = true
+                newNode.position.x = -menuScene.size.width
+                menuScene.UI.addChild(newNode)
+                menuScene.transition = Sweep(from: node, origin: true, to: newNode, duration: 0.5, onCompletion: {() -> () in
+                    node.removeFromParent()
+                    menuScene.transition = nil
+                })
+            }
+            levelEditorOptionsButton.spawn(in: node, at: Point(
+                                            x: 0,
+                                            y: -menuScene.size.height/4), withSize: Size(
+                                                width: graphicsText.size.width,
+                                                height: levelEditorText.size.height), onTouch: levelEditorScript)
+            levelEditorOptionsButton.geometry.vertices = []
+            levelEditorOptionsButton.label = "Graphics options button"
+            
         case .graphicsOptions:
             let menuScene = (scene as! MenuScene)
             
