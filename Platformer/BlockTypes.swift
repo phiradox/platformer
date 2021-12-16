@@ -206,7 +206,8 @@ class BlockTypes {
             Vertex(position: Vector3(0, -tileSize/2, 0), color: Color(r: 1, g: 0, b: 0, a: 1)),
             Vertex(position: Vector3(tileSize/2, tileSize/2, 0), color: Color(r: 1, g: 0, b: 0, a: 1))
         ]
-        editorBlocks["v"] = (label: "Vertical Moving Lava Beginning Down", block: block)
+        editorBlocks["v"] = (label: "Vertical Moving Lava Beginning Down", block: editorVersion)
+        
         
         // Moving Lava Up
         block = Block()

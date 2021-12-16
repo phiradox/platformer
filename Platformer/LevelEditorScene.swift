@@ -16,6 +16,7 @@ class LevelEditorScene: Scene {
     let levelNode: Node = Node()
     
     var levelScrollView: SKScrollView! = nil
+    var bounds: (left: Float, top: Float, right: Float, bottom: Float) = (left: 0, top: 0, right: 0, bottom: 0)
         
     var blockSelectionMenu: SKScrollView! = nil
     var blockButtons = Node()

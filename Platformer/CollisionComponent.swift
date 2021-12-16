@@ -461,6 +461,7 @@ class Water: CollisionComponent {
     
     internal func onCollision(with player: Player) -> Bool {
         player.water = true
+        player.waterBlock = parent
         return false
     }
     

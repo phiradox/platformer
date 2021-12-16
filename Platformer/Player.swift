@@ -14,7 +14,10 @@ class Player: Node {
     var velocity: Vector2 = Vector2(x: 0, y: 0)
     var friction: Vector2 = Vector2(x: 1, y: 1)
     var ground: Bool = false
+    
     var water: Bool = false
+    var waterBlock: Block? = nil
+    
     let dummy = Node()
     var dead = false
     
@@ -121,13 +124,24 @@ class Player: Node {
         if input.right {
             velocity.x += velocityConstants[3] / friction.x
         }
+        
         if input.jump && ground {
             ground = false
             velocity.y = velocityConstants[4] / friction.y
+            
         } else if input.jump && water {
             if velocity.y < GlobalVars.tileSize/20 * 2 {
                 velocity.y += velocityConstants[3]
             }
+        } else if input.jump {
+            if let block = waterBlock {
+                if block.position.y + block.size.height/2 <= self.position.y - self.size.height/2 {
+                    velocity.y += 3
+                }
+            }
+        }
+        if !water {
+            waterBlock = nil
         }
     }
     
