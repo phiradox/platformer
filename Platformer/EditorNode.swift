@@ -20,6 +20,47 @@ class EditorNode: Button {
         block.geometry.vertices = Rectangle(size: Size(width: self.size.width/2, height: self.size.height/2), color: Color(r: 1, g: 1, b: 1, a: 1)).toVertices()
         self.block = block
         self.geometry.vertices = []
+        
+        // check if we should expand the leveleditor view. we want a frame equal to the screen size all around the level at all times.
+        let levelEditorScene = parent.parent as! LevelEditorScene
+        
+        let leftmostLevel = levelEditorScene.bounds.left + levelEditorScene.size.width
+        let rightmostLevel = levelEditorScene.bounds.right - levelEditorScene.size.width
+        let topmostLevel = levelEditorScene.bounds.top - levelEditorScene.size.height
+        let bottommostLevel = levelEditorScene.bounds.bottom + levelEditorScene.size.height
+                
+        if (position.x < leftmostLevel) {
+            levelEditorScene.bounds.left = position.x - levelEditorScene.size.width
+
+            levelEditorScene.levelScrollView.contentSize = CGSize(width: CGFloat(levelEditorScene.bounds.right - levelEditorScene.bounds.left), height: CGFloat(levelEditorScene.bounds.top - levelEditorScene.bounds.bottom))
+            
+            levelEditorScene.levelScrollView.contentOffset.x += CGFloat(leftmostLevel-position.x)
+            
+            levelEditorScene.levelScrollView.nodeOffset.x = -position.x+levelEditorScene.size.width/2
+            levelEditorScene.levelScrollView.scrollViewDidScroll(levelEditorScene.levelScrollView)
+        }
+        if (position.y > topmostLevel) {
+            levelEditorScene.bounds.top = position.y + levelEditorScene.size.height
+
+            levelEditorScene.levelScrollView.contentSize = CGSize(width: CGFloat(levelEditorScene.bounds.right-levelEditorScene.bounds.left), height: CGFloat(levelEditorScene.bounds.top - levelEditorScene.bounds.bottom))
+            
+            // increments positively since position.y > topmostLevel
+            levelEditorScene.levelScrollView.contentOffset.y -= CGFloat(topmostLevel-position.y)
+            
+            levelEditorScene.levelScrollView.nodeOffset.y = -position.y-levelEditorScene.size.height/2
+            levelEditorScene.levelScrollView.scrollViewDidScroll(levelEditorScene.levelScrollView)
+        }
+        if (position.y < bottommostLevel) {
+            levelEditorScene.bounds.bottom = position.y - levelEditorScene.size.height
+
+            levelEditorScene.levelScrollView.contentSize = CGSize(width: CGFloat(levelEditorScene.bounds.right-levelEditorScene.bounds.left), height: CGFloat(levelEditorScene.bounds.top - levelEditorScene.bounds.bottom))
+        }
+        if (position.x > rightmostLevel) {
+            levelEditorScene.bounds.right = position.x + levelEditorScene.size.width
+
+            levelEditorScene.levelScrollView.contentSize = CGSize(width: CGFloat(levelEditorScene.bounds.right-levelEditorScene.bounds.left), height: CGFloat(levelEditorScene.bounds.top - levelEditorScene.bounds.bottom))
+            
+        }
     }
     
     func setBlock(to char: Character) {

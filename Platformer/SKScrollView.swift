@@ -27,6 +27,9 @@ class SKScrollView: UIScrollView, UIScrollViewDelegate {
     weak var scene: Scene! = nil
     var directionality: Directionality! = nil
     
+    // value applied to uniformly offset node during scrolling
+    var nodeOffset: Point = Point(x: 0, y: 0)
+    
     @objc var cellSize: CGFloat = 0.0
     @objc var cellOffset: CGFloat = 0.0
     
@@ -55,10 +58,10 @@ class SKScrollView: UIScrollView, UIScrollViewDelegate {
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         if directionality == .horizontal || directionality == .both {
-            movingNode?.position.x = -(Float)(scrollView.contentOffset.x)
+            movingNode?.position.x = -(Float)(scrollView.contentOffset.x) + nodeOffset.x
         }
         if directionality == .vertical || directionality == .both {
-            movingNode?.position.y = Float(scrollView.contentOffset.y)
+            movingNode?.position.y = Float(scrollView.contentOffset.y) + nodeOffset.y
         }
     }
     

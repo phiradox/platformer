@@ -76,6 +76,12 @@ class Level: NSObject, NSCoding {
         levelColors.append(contentsOf: [ambience.r, ambience.g, ambience.b, ambience.a, background.r, background.g, background.b, background.a, mainBlockColor.r, mainBlockColor.g, mainBlockColor.b, mainBlockColor.a, secondaryBlockColor.r, secondaryBlockColor.g, secondaryBlockColor.b, secondaryBlockColor.a])
     }
     
+    func getSize() -> Size {
+        return Size(width: Float(level[0].count), height: Float(level.count))
+        
+    }
+    
+    
     required convenience init?(coder aDecoder: NSCoder) {
         guard let name = aDecoder.decodeObject(forKey: PropertyKey.name) as? String
             else {

@@ -48,21 +48,36 @@ class LevelEditorScene: Scene {
         initLevelScrollView()
         view.addSubview(levelScrollView)
         
+        bounds = (left: 0, top: 0, right: 0, bottom: 0) // automatically scaled with level
+        
+        // load level
         if LevelEditorScene.levelBeingEditted < SaveData.levels.count {
             loadCurrentLevel()
             self.level = SaveData.levels[LevelEditorScene.levelBeingEditted]
+            
+        // or new level
         } else {
+            // MARK: New Level
             // initialize the beginning node
             let editorNode = EditorNode()
-            editorNode.spawn(in: levelNode, at: Point(x: self.size.width*5, y: -self.size.height*5), withSize: Size(width: tileSize, height: tileSize), onTouch: {() -> () in })
-            //editorNodes.append(editorNode)
+            editorNode.spawn(in: levelNode, at: Point(x: 0, y: 0), withSize: Size(width: tileSize, height: tileSize), onTouch: {() -> () in })
             self.level = Level(named: "Untitled", levelData: [""], ambience: Color(r: 1.0, g: 0.0, b: 0.0, a: 1.0), background: Color(r: 0.1, g: 0.0, b: 0.3, a: 1.0), mainBlockColor: Color(r: 0.7, g: 0.7, b: 0.7, a: 1.0), secondaryBlockColor: Color(r: 0.0, g: 1.0, b: 0.0, a: 1.0))
         }
         selectedBlock = blockTypes.blocks["X"]!.block.duplicate()
+        
         initButtons()
         
         self.geometry.color = self.level.background
+        
+        print(bounds)
+        print(level.getSize())
+        print(tileSize)
+        print(self.size)
+        print(levelScrollView.contentOffset)
+        print(levelScrollView.contentSize)
     }
+    
+    // MARK: Block Selection menu
     
     func initBlockSelectionMenu() {
         let blockSelectionMenuWidth = tileSize*4
@@ -127,10 +142,10 @@ class LevelEditorScene: Scene {
                                         y: 0,
                                         width: CGFloat(self.size.width) - self.blockSelectionMenu.contentSize.width,
                                         height: CGFloat(self.size.height)), with: .both)
-        levelScrollView.contentSize = CGSize(width: CGFloat(self.size.width * 10), height: CGFloat(self.size.height * 10))
         levelNode.geometry.dynamic = true
-        levelScrollView.contentOffset = CGPoint(x: CGFloat(self.size.width*5), y: CGFloat(self.size.height*5))
     }
+    
+    // MARK: UI: Buttons
     
     func initButtons() {
         // main menu button
@@ -217,23 +232,28 @@ class LevelEditorScene: Scene {
         optionsButton.geometry.dynamic = true
     }
     
+    // MARK: Load Level
+    
     func loadCurrentLevel() {
         let levelData = SaveData.levels[LevelEditorScene.levelBeingEditted].level!
-        let levelSizeInEditor = Size(width: Float(levelData[0].count) * GlobalVars.tileSize*2, height: Float(levelData.count) * GlobalVars.tileSize*2)
-        let offset = Point(x: self.size.width*5, y: -self.size.height*5)
-        for (y, row) in levelData.reversed().enumerated() {
+
+        let levelSize = Size(width: Float(levelData[0].count), height: Float(levelData.count))
+        
+        for (y, row) in levelData.enumerated() {
             for (x, char) in row.enumerated() {
                 if char != " " {
                     let editorNode = EditorNode()
                     editorNode.spawn(in: levelNode, at: Point(
-                                        x: Float(x)*tileSize - levelSizeInEditor.width/2 + offset.x,
-                                        y: Float(y)*tileSize - levelSizeInEditor.height/2 + offset.y),
+                                        x: (Float(x) - levelSize.width/2)*tileSize,
+                                        y: -(Float(y) - levelSize.height/2)*tileSize),
                                      withSize: Size(width: tileSize, height: tileSize), onTouch: {() -> () in })
                     editorNode.setBlock(to: char)
                 }
             }
         }
     }
+    
+    // MARK: Generate ASCII
     
     func genLevel() -> [String] {
         if levelNode.children.count <= 1 {
@@ -269,7 +289,7 @@ class LevelEditorScene: Scene {
         for y in minY-1...maxY-1 {
             var row: String = ""
             for x in minX...maxX {
-                let nodes = levelNode.nodes(at: Point(x: Float(x)*tileSize, y: Float(y)*tileSize), relativeTo: .nodeSelf)
+                let nodes = levelNode.nodes(at: Point(x: Float(x)*tileSize, y: Float(y)*tileSize), relativeTo: .nodeSelf) // TODO: very inefficient. see below
                 if let editorNode = nodes.first as? EditorNode {
                     if !editorNode.empty {
                         row.append(Character(editorNode.block!.label!))
@@ -282,10 +302,15 @@ class LevelEditorScene: Scene {
             }
             newLevel.append(row)
         }
+        
+        // instead generate ascii space grid of width maxx-minx height maxy-miny and then go through list of editornode children and simply insert the characters one by one into the grid. much faster than searching through the list of all nodes for each gridspace to see if one is there...
+        
         newLevel.reverse()
         print(newLevel)
         return newLevel
     }
+    
+    // MARK: Touches
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         for delegate in touchDelegates {
